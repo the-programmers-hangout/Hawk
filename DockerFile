@@ -11,6 +11,6 @@ FROM openjdk:12
 ENV BOT_TOKEN=UNSET
 
 RUN mkdir /data/
-COPY --from=build /target/WarmBot-jar-with-dependencies.jar /Warmbot.jar
+COPY --from=build /target/Ear-jar-with-dependencies.jar /Ear.jar
 
-CMD /usr/bin/java -jar /Warmbot.jar $BOT_TOKEN
+CMD /usr/bin/java -jar /Ear.jar $BOT_TOKEN
