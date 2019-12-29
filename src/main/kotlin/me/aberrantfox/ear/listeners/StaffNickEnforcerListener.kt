@@ -48,7 +48,7 @@ class StaffNickEnforcerListener(private val configuration: BotConfiguration) {
     }
 }
 
-private fun applyNickPrefix(name: String, prefix: String): String {
+fun applyNickPrefix(name: String, prefix: String): String {
     val nickWithPrefix = "$prefix $name"
 
     return if(nickWithPrefix.length > 32) {
