@@ -2,25 +2,28 @@ package me.aberrantfox.ear.listeners
 
 import com.google.common.eventbus.Subscribe
 import me.aberrantfox.ear.configuration.BotConfiguration
+import me.aberrantfox.ear.extensions.isHigherThan
+import me.aberrantfox.ear.extensions.isStaffMember
 import me.aberrantfox.kjdautils.extensions.jda.fullName
-import me.aberrantfox.kjdautils.extensions.jda.getHighestRole
 import me.aberrantfox.kjdautils.extensions.jda.sendPrivateMessage
 import me.aberrantfox.kjdautils.extensions.jda.toMember
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent
 
-class StaffNickEnforcerListener(val configuration: BotConfiguration) {
+class StaffNickEnforcerListener(private val configuration: BotConfiguration) {
     @Subscribe
     fun onGuildNickChange(event: GuildMemberUpdateNicknameEvent) {
+        if(event.user.id == event.jda.selfUser.id) {
+            return
+        }
+
+        val guild = event.guild
+        val member = event.member
+
         if( !(configuration.enabled) ) {
             return
         }
 
-        val guild = event.jda.getGuildById(configuration.guild)!!
-        val member = event.user.toMember(guild) ?: return
-
-        val isStaffMember = member.roles.any { it.name == configuration.staffRole }
-
-        if(!isStaffMember) {
+        if( !(member.isStaffMember(guild, configuration))) {
             return
         }
 
@@ -32,16 +35,9 @@ class StaffNickEnforcerListener(val configuration: BotConfiguration) {
         }
 
         val newNick = applyNickPrefix(nick, configuration.nickPrefix)
+        val botUser = event.jda.selfUser.toMember(guild)!!
 
-        // !! operator is safe because to be at this point they must have a staff role at least.
-        // !! is assumed for the bot.
-
-        val memberLevel = member.getHighestRole()!!.position
-        val userLevel = event.jda.selfUser.toMember(guild)!!.getHighestRole()!!.position
-
-        val isHigher = memberLevel > userLevel
-
-        if(isHigher) {
+        if(member.isHigherThan(botUser) || member.isOwner) {
             member.user.sendPrivateMessage("You have updated your nickname and it does not contain the prefix." +
                     " Here it is with the prefix: `$newNick`")
         } else {
@@ -49,7 +45,6 @@ class StaffNickEnforcerListener(val configuration: BotConfiguration) {
                 println("Updated ${member.fullName()}'s nickname to include the staff tag.")
             }
         }
-
     }
 }
 
