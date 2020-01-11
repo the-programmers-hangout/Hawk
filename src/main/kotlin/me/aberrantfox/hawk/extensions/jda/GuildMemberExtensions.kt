@@ -1,14 +1,13 @@
-package me.aberrantfox.ear.extensions.jda
+package me.aberrantfox.hawk.extensions.jda
 
-import me.aberrantfox.ear.configuration.BotConfiguration
-import me.aberrantfox.ear.data.Messages
-import me.aberrantfox.ear.extensions.stdlib.inject
+import me.aberrantfox.hawk.configuration.BotConfiguration
+import me.aberrantfox.hawk.data.Messages
+import me.aberrantfox.hawk.extensions.stdlib.inject
 import me.aberrantfox.kjdautils.extensions.jda.fullName
 import me.aberrantfox.kjdautils.extensions.jda.getHighestRole
 import me.aberrantfox.kjdautils.extensions.jda.sendPrivateMessage
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.entities.Message
 
 fun Member.isStaffMember(guild: Guild, configuration: BotConfiguration) =
         roles.any { it.name == configuration.staffRole } || isOwner

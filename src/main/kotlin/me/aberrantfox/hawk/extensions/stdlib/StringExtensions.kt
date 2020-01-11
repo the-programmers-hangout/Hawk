@@ -1,4 +1,4 @@
-package me.aberrantfox.ear.extensions.stdlib
+package me.aberrantfox.hawk.extensions.stdlib
 
 fun String.inject(element: String) =
          replace("%1%", element)

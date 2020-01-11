@@ -1,4 +1,4 @@
-package me.aberrantfox.ear.configuration
+package me.aberrantfox.hawk.configuration
 
 import me.aberrantfox.kjdautils.api.annotation.Data
 

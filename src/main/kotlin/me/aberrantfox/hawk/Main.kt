@@ -1,4 +1,4 @@
-package me.aberrantfox.ear
+package me.aberrantfox.hawk
 
 import me.aberrantfox.kjdautils.api.startBot
 import kotlin.system.exitProcess

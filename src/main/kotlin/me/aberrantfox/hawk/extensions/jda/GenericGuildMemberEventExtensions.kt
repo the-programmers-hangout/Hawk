@@ -1,4 +1,4 @@
-package me.aberrantfox.ear.extensions.jda
+package me.aberrantfox.hawk.extensions.jda
 
 
 import net.dv8tion.jda.api.events.guild.member.update.GenericGuildMemberUpdateEvent

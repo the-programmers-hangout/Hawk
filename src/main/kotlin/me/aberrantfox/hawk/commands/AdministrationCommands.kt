@@ -1,6 +1,6 @@
-package me.aberrantfox.ear.commands
+package me.aberrantfox.hawk.commands
 
-import me.aberrantfox.ear.configuration.BotConfiguration
+import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.aberrantfox.kjdautils.api.dsl.command.CommandSet
 import me.aberrantfox.kjdautils.api.dsl.command.commands
 

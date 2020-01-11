@@ -1,6 +1,6 @@
-package me.aberrantfox.ear.preconditions
+package me.aberrantfox.hawk.preconditions
 
-import me.aberrantfox.ear.configuration.BotConfiguration
+import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.aberrantfox.kjdautils.api.dsl.Precondition
 import me.aberrantfox.kjdautils.api.dsl.precondition
 import me.aberrantfox.kjdautils.internal.command.Fail

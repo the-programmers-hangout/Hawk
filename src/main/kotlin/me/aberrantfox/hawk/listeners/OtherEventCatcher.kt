@@ -1,19 +1,14 @@
-package me.aberrantfox.ear.listeners
+package me.aberrantfox.hawk.listeners
 
 import com.google.common.eventbus.Subscribe
-import me.aberrantfox.ear.configuration.BotConfiguration
-import me.aberrantfox.ear.data.Messages
-import me.aberrantfox.ear.extensions.jda.ensureCorrectEffectiveName
-import me.aberrantfox.ear.extensions.jda.ensureHammer
-import me.aberrantfox.ear.extensions.jda.ensureNoHammer
-import me.aberrantfox.ear.extensions.jda.isStaffMember
+import me.aberrantfox.hawk.configuration.BotConfiguration
+import me.aberrantfox.hawk.data.Messages
+import me.aberrantfox.hawk.extensions.jda.ensureCorrectEffectiveName
 import me.aberrantfox.kjdautils.extensions.jda.toMember
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent
-import net.dv8tion.jda.api.events.guild.member.update.GenericGuildMemberUpdateEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
-import net.dv8tion.jda.api.events.user.update.GenericUserUpdateEvent
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent
 
 class OtherEventCatcher(val configuration: BotConfiguration, val messages: Messages) {
