@@ -11,6 +11,6 @@ FROM openjdk:12
 ENV BOT_TOKEN=UNSET
 
 RUN mkdir /data/
-COPY --from=build /target/Ear-jar-with-dependencies.jar /Ear.jar
+COPY --from=build /target/Hawk-jar-with-dependencies.jar /Hawk.jar
 
-CMD /usr/bin/java -jar /Ear.jar $BOT_TOKEN
+CMD /usr/bin/java -jar /Hawk.jar $BOT_TOKEN
