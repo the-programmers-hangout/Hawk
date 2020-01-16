@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 
     startBot(token) {
         configure {
-            globalPath = "me.aberrantfox.ear."
+            globalPath = "me.aberrantfox.hawk."
         }
     }
 }
