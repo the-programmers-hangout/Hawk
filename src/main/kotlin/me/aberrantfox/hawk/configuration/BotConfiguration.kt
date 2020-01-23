@@ -8,5 +8,6 @@ data class BotConfiguration(
         val owner: String = "222164217707364362",
         val nickPrefix: String = "\uD83D\uDD28 ",
         var enabled: Boolean = true,
-        var staffRole: String = "Staff"
+        var staffRole: String = "Staff",
+        var stripString: String = "\uD83D\uDD28"
 )

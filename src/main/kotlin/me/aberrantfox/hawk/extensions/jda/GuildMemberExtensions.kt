@@ -28,7 +28,7 @@ fun Member.isHigherThan(other: Member): Boolean {
 }
 
 fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, action: (Member) -> Unit = {}) {
-    if( !(effectiveName.startsWith(configuration.nickPrefix)) ) {
+    if( !(effectiveName.contains(configuration.stripString)) ) {
         return
     }
 
@@ -44,7 +44,9 @@ fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, a
 }
 
 fun Member.ensureHammer(configuration: BotConfiguration, selfMember: Member, messages: Messages, action: (Member) -> Unit = {}) {
-    if( (effectiveName.startsWith(configuration.nickPrefix)) ) {
+    val nameWithoutPrefix = effectiveName.removePrefix(configuration.nickPrefix)
+
+    if( (effectiveName.startsWith(configuration.nickPrefix)) && !(nameWithoutPrefix.contains(configuration.stripString)) ) {
         return
     }
 
@@ -77,24 +79,37 @@ fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfigurat
 
 fun Member.determineNewNickName(configuration: BotConfiguration) =
     if(isStaffMember(guild, configuration)) {
-        applyNickPrefix(effectiveName, configuration.nickPrefix)
+        applyNickPrefix(effectiveName, configuration.nickPrefix, configuration.stripString)
     } else {
-        removeNickPrefix(effectiveName, configuration.nickPrefix)
+        removeNickPrefix(effectiveName, configuration.stripString)
     }
 
-fun applyNickPrefix(name: String, prefix: String): String {
-    val nickWithPrefix = "$prefix $name"
+fun applyNickPrefix(name: String, prefix: String, stripString: String): String {
+    val newName = name.replace(stripString, "")
+    val nickWithPrefix = "$prefix $newName"
 
-    return if(nickWithPrefix.length > 32) {
+    val sizedNick = if(nickWithPrefix.length > 32) {
         nickWithPrefix.substring(0, 31)
     } else {
         nickWithPrefix
     }
+
+    val discordNick = sizedNick.replace(" ", "").replace(stripString, "")
+
+    return if(discordNick.isBlank()) {
+        "$prefix Blanky blankerson"
+    } else {
+        sizedNick
+    }
 }
 
-fun removeNickPrefix(name: String, prefix: String) =
-    if(name.replace(prefix, "") == " ") {
+fun removeNickPrefix(name: String, prefix: String): String {
+    val strippedName = name.replace(prefix, "")
+
+    return if(strippedName.isBlank() || strippedName == "") {
         "Chunck Testa"
     } else {
         name.replace(prefix, "")
     }
+}
+
