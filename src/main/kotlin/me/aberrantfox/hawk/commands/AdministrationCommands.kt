@@ -45,14 +45,14 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
         }
     }
 
-    command("setPrefix") {
+    command("setNickSymbol") {
         description = "Set the token to appear in nicknames."
         execute(SentenceArg) {
             val symbol = it.args.first
             botConfiguration.nickSymbol = "$symbol "
             botConfiguration.stripString = symbol
             persistenceService.save(botConfiguration)
-            it.respond("Set the bots prefix to **${it.args.first}**.")
+            it.respond("Set the bots symbol to **${it.args.first}**")
         }
     }
 }

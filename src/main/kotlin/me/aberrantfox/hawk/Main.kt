@@ -12,6 +12,7 @@ import kotlin.system.exitProcess
 data class Properties(val author: String, val version: String, val kutils: String, val repository: String)
 private val propFile = Properties::class.java.getResource("/properties.json").readText()
 val project: Properties = Gson().fromJson(propFile, Properties::class.java)
+val startTime = Date()
 
 fun main(args: Array<String>) {
     val token = args.firstOrNull()
@@ -39,7 +40,6 @@ fun main(args: Array<String>) {
                     val self = it.guild.jda.selfUser
                     val kotlinVersion = KotlinVersion.CURRENT
                     val requiredRole = configuration.staffRole ?: "<Not Configured>"
-                    val startTime = Date()
                     val milliseconds = Date().time - startTime.time
                     val seconds = (milliseconds / 1000) % 60
                     val minutes = (milliseconds / (1000 * 60)) % 60
@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
                             "$minutes minute(s) " +
                             "and $seconds second(s)")
 
-                    addField("Build Info", "``" +
+                    addField("Build Info", "```" +
                             "Version: $version\n" +
                             "KUtils: $kutils\n" +
                             "Kotlin: $kotlinVersion" +
