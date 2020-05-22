@@ -5,6 +5,7 @@ import me.aberrantfox.kjdautils.api.annotation.CommandSet
 import me.aberrantfox.kjdautils.api.dsl.command.commands
 import me.aberrantfox.kjdautils.internal.arguments.ChoiceArg
 import me.aberrantfox.kjdautils.internal.arguments.MemberArg
+import me.aberrantfox.kjdautils.internal.arguments.RoleArg
 import me.aberrantfox.kjdautils.internal.arguments.WordArg
 import me.aberrantfox.kjdautils.internal.services.PersistenceService
 
@@ -54,6 +55,15 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
             botConfiguration.stripString = symbol
             persistenceService.save(botConfiguration)
             it.respond("Set the bots symbol to **${it.args.first}**")
+        }
+    }
+
+    command("setRole") {
+        description = "Set the role that will have symbols enforced."
+        execute(RoleArg) {
+            botConfiguration.staffRole = it.args.first.name
+            persistenceService.save(botConfiguration)
+            it.respond("Set the bots role to **${it.args.first.name}**")
         }
     }
 
