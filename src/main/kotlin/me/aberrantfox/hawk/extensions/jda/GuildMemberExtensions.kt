@@ -13,11 +13,11 @@ fun Member.isStaffMember(guild: Guild, configuration: BotConfiguration) =
         roles.any { it.name == configuration.staffRole } || isOwner
 
 fun Member.isHigherThan(other: Member): Boolean {
-    if(this.id == other.id) {
+    if (this.id == other.id) {
         return false
     }
 
-    if(isOwner) {
+    if (isOwner) {
         return true
     }
 
@@ -28,12 +28,12 @@ fun Member.isHigherThan(other: Member): Boolean {
 }
 
 fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, action: (Member) -> Unit = {}) {
-    if( !(effectiveName.contains(configuration.stripString)) ) {
+    if (!(effectiveName.contains(configuration.stripString))) {
         return
     }
 
-    if(isHigherThan(selfMember)) {
-       return
+    if (isHigherThan(selfMember)) {
+        return
     }
 
     val nick = determineNewNickName(configuration)
@@ -44,15 +44,19 @@ fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, a
 }
 
 fun Member.ensureHammer(configuration: BotConfiguration, selfMember: Member, messages: Messages, action: (Member) -> Unit = {}) {
-    val nameWithoutPrefix = effectiveName.removePrefix(configuration.nickPrefix)
+    val nameWithoutPrefix = if (configuration.mode.toLowerCase() == "prefix") {
+        effectiveName.removePrefix(configuration.nickSymbol)
+    } else {
+        effectiveName.removeSuffix(configuration.nickSymbol.replace(" ", ""))
+    }
 
-    if( (effectiveName.startsWith(configuration.nickPrefix)) && !(nameWithoutPrefix.contains(configuration.stripString)) ) {
+    if (nicknameIsValid(effectiveName, nameWithoutPrefix, configuration)) {
         return
     }
 
     val nick = determineNewNickName(configuration)
 
-    if(isHigherThan(selfMember) || isOwner) {
+    if (isHigherThan(selfMember) || isOwner) {
         this.user.sendPrivateMessage(messages.STAFF_NICK_PROMPT.inject(nick))
     } else {
         modifyNickname(nick).queue {
@@ -66,11 +70,11 @@ fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfigurat
         return
     }
 
-    if(this.id == guild.selfMember.id) {
+    if (this.id == guild.selfMember.id) {
         return
     }
 
-    if(this.isStaffMember(guild, configuration)) {
+    if (this.isStaffMember(guild, configuration)) {
         this.ensureHammer(configuration, guild.selfMember, messages, action)
     } else {
         this.ensureNoHammer(configuration, guild.selfMember, action)
@@ -78,26 +82,34 @@ fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfigurat
 }
 
 fun Member.determineNewNickName(configuration: BotConfiguration) =
-    if(isStaffMember(guild, configuration)) {
-        applyNickPrefix(effectiveName, configuration.nickPrefix, configuration.stripString)
+        if (isStaffMember(guild, configuration)) {
+            applyNickPrefix(effectiveName, configuration.nickSymbol, configuration.stripString, configuration.mode)
+        } else {
+            removeNickPrefix(effectiveName, configuration.stripString)
+        }
+
+fun applyNickPrefix(name: String, symbol: String, stripString: String, mode: String): String {
+    val newName = name.replace(stripString, "").replace(" ", "")
+    val nickWithPrefix = if (mode.toLowerCase() == "prefix") {
+        "$symbol $newName"
     } else {
-        removeNickPrefix(effectiveName, configuration.stripString)
+        "$newName $symbol"
     }
 
-fun applyNickPrefix(name: String, prefix: String, stripString: String): String {
-    val newName = name.replace(stripString, "")
-    val nickWithPrefix = "$prefix $newName"
-
-    val sizedNick = if(nickWithPrefix.length > 32) {
-        nickWithPrefix.substring(0, 31)
+    val sizedNick = if (nickWithPrefix.length > 32) {
+        if (mode.toLowerCase() == "prefix") {
+            nickWithPrefix.substring(0, 31)
+        } else {
+            nickWithPrefix.substring(0, 31 - symbol.length) + symbol
+        }
     } else {
         nickWithPrefix
     }
 
     val discordNick = sizedNick.replace(" ", "").replace(stripString, "")
 
-    return if(discordNick.isBlank()) {
-        "$prefix Blanky blankerson"
+    return if (discordNick.isBlank()) {
+        "$symbol Blanky blankerson"
     } else {
         sizedNick
     }
@@ -106,10 +118,14 @@ fun applyNickPrefix(name: String, prefix: String, stripString: String): String {
 fun removeNickPrefix(name: String, prefix: String): String {
     val strippedName = name.replace(prefix, "")
 
-    return if(strippedName.isBlank() || strippedName == "") {
+    return if (strippedName.isBlank() || strippedName == "") {
         "Chunck Testa"
     } else {
         name.replace(prefix, "")
     }
 }
 
+private fun nicknameIsValid(name: String, nameWithoutPrefix: String, configuration: BotConfiguration): Boolean {
+    return (configuration.mode == "prefix" && name.startsWith(configuration.nickSymbol)) || name.endsWith(configuration.nickSymbol.replace(" ", ""))
+            && !(nameWithoutPrefix.contains(configuration.stripString))
+}
