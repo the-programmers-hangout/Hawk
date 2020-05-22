@@ -39,7 +39,6 @@ fun main(args: Array<String>) {
                 with(project) {
                     val self = it.guild.jda.selfUser
                     val kotlinVersion = KotlinVersion.CURRENT
-                    val requiredRole = configuration.staffRole ?: "<Not Configured>"
                     val milliseconds = Date().time - startTime.time
                     val seconds = (milliseconds / 1000) % 60
                     val minutes = (milliseconds / (1000 * 60)) % 60
@@ -51,16 +50,24 @@ fun main(args: Array<String>) {
                     addField(self.fullName(), "A bot to add and maintain a symbol as a prefix or suffix in staff names.")
                     addInlineField("Prefix", configuration.botPrefix)
                     addInlineField("Ping", "${discord.jda.gatewayPing}ms")
-                    addField("Uptime", "$days day(s), " +
-                            "$hours hour(s), " +
-                            "$minutes minute(s) " +
-                            "and $seconds second(s)")
+
+                    addField("Config Info", "```" +
+                            "Mode: ${configuration.mode}\n" +
+                            "Role: ${configuration.staffRole}\n" +
+                            "Symbol: ${configuration.nickSymbol}\n" +
+                            "Enabled: ${configuration.enabled}" +
+                            "```")
 
                     addField("Build Info", "```" +
                             "Version: $version\n" +
                             "KUtils: $kutils\n" +
                             "Kotlin: $kotlinVersion" +
                             "```")
+
+                    addField("Uptime", "$days day(s), " +
+                            "$hours hour(s), " +
+                            "$minutes minute(s) " +
+                            "and $seconds second(s)")
 
                     addInlineField("Source", repository)
                 }
