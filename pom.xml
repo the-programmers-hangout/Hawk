@@ -10,7 +10,7 @@
 
     <properties>
         <kotlin.version>1.3.71</kotlin.version>
-        <kutils.version>0.15.1</kutils.version>
+        <kutils.version>0.16.0</kutils.version>
         <project.repository>https://github.com/the-programmers-hangout/Hawk</project.repository>
     </properties>
 

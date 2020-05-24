@@ -6,12 +6,12 @@ import me.aberrantfox.kjdautils.api.dsl.command.commands
 import me.aberrantfox.kjdautils.internal.arguments.ChoiceArg
 import me.aberrantfox.kjdautils.internal.arguments.MemberArg
 import me.aberrantfox.kjdautils.internal.arguments.RoleArg
-import me.aberrantfox.kjdautils.internal.arguments.WordArg
+import me.aberrantfox.kjdautils.internal.arguments.AnyArg
 import me.aberrantfox.kjdautils.internal.services.PersistenceService
 
 @CommandSet("Admin")
 fun createAdministrationCommands(botConfiguration: BotConfiguration, persistenceService: PersistenceService) = commands {
-    command("toggleFunctionality", "toggle") {
+    command("toggle") {
         description = "Toggles the bot functionality"
         execute {
             botConfiguration.enabled = !botConfiguration.enabled
@@ -47,9 +47,9 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
         }
     }
 
-    command("setNickSymbol") {
+    command("setSymbol") {
         description = "Set the token to appear in nicknames."
-        execute(WordArg("Symbol")) {
+        execute(AnyArg("Symbol")) {
             val symbol = it.args.first
             botConfiguration.nickSymbol = "$symbol "
             botConfiguration.stripString = symbol
@@ -78,7 +78,7 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
 
     command("setPrefix") {
         description = "Set the bot's invocation prefix"
-        execute(WordArg("Prefix")) {
+        execute(AnyArg("Prefix")) {
             botConfiguration.botPrefix = it.args.first
             persistenceService.save(botConfiguration)
             it.respond("Set the bots owner prefix to **${it.args.first}**")
