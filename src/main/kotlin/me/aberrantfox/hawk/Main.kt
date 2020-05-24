@@ -22,10 +22,10 @@ fun main(args: Array<String>) {
         exitProcess(-1)
     }
 
-    startBot(token, "me.aberrantfox.hawk.") {
+    startBot(token, globalPath = "me.aberrantfox.hawk.") {
         configure {
             val configuration: BotConfiguration = discord.getInjectionObject<BotConfiguration>()!!
-            prefix = configuration.botPrefix
+            prefix { configuration.botPrefix }
             allowMentionPrefix = true
 
             colors {
@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
 
             mentionEmbed {
                 with(project) {
-                    val self = it.guild.jda.selfUser
+                    val self = it.guild!!.jda.selfUser
                     val kotlinVersion = KotlinVersion.CURRENT
                     val milliseconds = Date().time - startTime.time
                     val seconds = (milliseconds / 1000) % 60
