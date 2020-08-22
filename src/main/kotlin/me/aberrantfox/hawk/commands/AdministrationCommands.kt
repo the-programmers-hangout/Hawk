@@ -7,6 +7,7 @@ import me.aberrantfox.kjdautils.internal.arguments.ChoiceArg
 import me.aberrantfox.kjdautils.internal.arguments.MemberArg
 import me.aberrantfox.kjdautils.internal.arguments.RoleArg
 import me.aberrantfox.kjdautils.internal.arguments.AnyArg
+import me.aberrantfox.kjdautils.internal.arguments.EveryArg
 import me.aberrantfox.kjdautils.internal.services.PersistenceService
 
 @CommandSet("Admin")
@@ -82,6 +83,33 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
             botConfiguration.botPrefix = it.args.first
             persistenceService.save(botConfiguration)
             it.respond("Set the bots owner prefix to **${it.args.first}**")
+        }
+    }
+    
+    command("toggleParty") {
+        description = "Toggles party mode"
+        execute {
+            botConfiguration.partyMode = !botConfiguration.partyMode
+            persistenceService.save(botConfiguration)
+            it.respond("${if(botConfiguration.partyMode) "Let's get this party started!" else "We're done. That's all folks!"}")
+        }
+    }
+    
+    command("getPartySuffix") {
+        description = "Display current party mode suffix"
+        execute {
+            it.respond("Suffix: ${botConfiguration.partySuffix}")
+        }
+    }
+    
+    command("setPartySuffix") {
+        description = "Set new party mode suffix"
+        execute (EveryArg("Suffix")){
+            val symbol = it.args.first.replace("\uD83D\uDD28", "")
+            botConfiguration.partySuffix = "$symbol "
+            botConfiguration.partyStrip = symbol
+            persistenceService.save(botConfiguration)
+            it.respond("Set the party suffix to **${symbol}**")
         }
     }
 }

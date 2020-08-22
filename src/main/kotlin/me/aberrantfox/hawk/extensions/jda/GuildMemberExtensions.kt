@@ -79,6 +79,21 @@ fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfigurat
     } else {
         this.ensureNoHammer(configuration, guild.selfMember, action)
     }
+    this.setPartySuffix(configuration)
+}
+
+fun Member.setPartySuffix(configuration: BotConfiguration) {
+    if (configuration.partyMode) {
+        val nick = applyNickPrefix(effectiveName, configuration.partySuffix, configuration.partyStrip, "suffix")
+        modifyNickname(nick).queue {
+            println("Added party suffix for ${this.fullName()}")
+        }
+    } else if (effectiveName.endsWith(configuration.partySuffix) || effectiveName.endsWith(configuration.partyStrip)){
+        val nick = removeNickPrefix(effectiveName, configuration.partyStrip)
+        modifyNickname(nick).queue {
+            println("Removed party suffix for ${this.fullName()}")
+        }
+    }
 }
 
 fun Member.determineNewNickName(configuration: BotConfiguration) =
