@@ -26,8 +26,10 @@ class OtherEventCatcher(val configuration: BotConfiguration, val messages: Messa
             event.member.ensureCorrectEffectiveName(event.guild, configuration, messages)
 
     @Subscribe
-    fun onGuildMessageEvent(event: GuildMessageReceivedEvent) =
-            event.member?.ensureCorrectEffectivePartyName(event.guild, configuration, messages)
+    fun onGuildMessageEvent(event: GuildMessageReceivedEvent) {
+        event.member?.ensureCorrectEffectivePartyName(event.guild, configuration, messages)
+        event.member?.ensureCorrectEffectiveName(event.guild, configuration, messages)
+    }
 
     @Subscribe
     fun onUsernameChanged(event: UserUpdateNameEvent) {
