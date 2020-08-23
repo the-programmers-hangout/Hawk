@@ -65,6 +65,18 @@ fun Member.ensureHammer(configuration: BotConfiguration, selfMember: Member, mes
     }
 }
 
+fun Member.ensureCorrectEffectivePartyName(guild: Guild, configuration: BotConfiguration, messages: Messages, action: (Member) -> Unit = {}) {
+    if (!(configuration.enabled)) {
+        return
+    }
+
+    if (this.id == guild.selfMember.id) {
+        return
+    }
+    
+    this.setPartySuffix(configuration)
+}
+
 fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfiguration, messages: Messages, action: (Member) -> Unit = {}) {
     if (!(configuration.enabled)) {
         return
@@ -79,16 +91,16 @@ fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfigurat
     } else {
         this.ensureNoHammer(configuration, guild.selfMember, action)
     }
-    this.setPartySuffix(configuration)
 }
 
 fun Member.setPartySuffix(configuration: BotConfiguration) {
-    if (configuration.partyMode) {
+    val userPartying = effectiveName.endsWith(configuration.partySuffix) || effectiveName.endsWith(configuration.partyStrip)
+    if (configuration.partyMode && !userPartying) {
         val nick = applyNickPrefix(effectiveName, configuration.partySuffix, configuration.partyStrip, "suffix")
         modifyNickname(nick).queue {
             println("Added party suffix for ${this.fullName()}")
         }
-    } else if (effectiveName.endsWith(configuration.partySuffix) || effectiveName.endsWith(configuration.partyStrip)){
+    } else if (!configuration.partyMode && userPartying){
         val nick = removeNickPrefix(effectiveName, configuration.partyStrip)
         modifyNickname(nick).queue {
             println("Removed party suffix for ${this.fullName()}")
@@ -104,7 +116,7 @@ fun Member.determineNewNickName(configuration: BotConfiguration) =
         }
 
 fun applyNickPrefix(name: String, symbol: String, stripString: String, mode: String): String {
-    val newName = name.replace(stripString, "").replace(" ", "")
+    val newName = name.replace(stripString, "").replace("\\s+|", "")
     val nickWithPrefix = if (mode.toLowerCase() == "prefix") {
         "$symbol $newName"
     } else {
