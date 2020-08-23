@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe
 import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.aberrantfox.hawk.botdata.Messages
 import me.aberrantfox.hawk.extensions.jda.ensureCorrectEffectiveName
+import me.aberrantfox.hawk.extensions.jda.ensureCorrectEffectivePartyName
 import me.aberrantfox.kjdautils.extensions.jda.toMember
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent
@@ -26,7 +27,7 @@ class OtherEventCatcher(val configuration: BotConfiguration, val messages: Messa
 
     @Subscribe
     fun onGuildMessageEvent(event: GuildMessageReceivedEvent) =
-            event.member?.ensureCorrectEffectiveName(event.guild, configuration, messages)
+            event.member?.ensureCorrectEffectivePartyName(event.guild, configuration, messages)
 
     @Subscribe
     fun onUsernameChanged(event: UserUpdateNameEvent) {
