@@ -106,10 +106,14 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration, persistence
         description = "Set new party mode suffix"
         execute (EveryArg("Suffix")){
             val symbol = it.args.first.replace("\uD83D\uDD28", "")
-            botConfiguration.partySuffix = "$symbol "
-            botConfiguration.partyStrip = symbol
-            persistenceService.save(botConfiguration)
-            it.respond("Set the party suffix to **${symbol}**")
+            if (symbol.length > 11 || symbol.isEmpty()) {
+                it.respond("Suffix is must be shorter than 11 characters and not empty!")
+            } else {
+                botConfiguration.partySuffix = "$symbol "
+                botConfiguration.partyStrip = symbol
+                persistenceService.save(botConfiguration)
+                it.respond("Set the party suffix to **${symbol}**")
+            }
         }
     }
 }
