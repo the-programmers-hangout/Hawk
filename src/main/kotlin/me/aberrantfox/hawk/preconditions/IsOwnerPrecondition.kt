@@ -1,12 +1,17 @@
 package me.aberrantfox.hawk.preconditions
 
 import me.aberrantfox.hawk.configuration.BotConfiguration
-import me.aberrantfox.kjdautils.api.annotation.Precondition
-import me.aberrantfox.kjdautils.internal.command.Fail
-import me.aberrantfox.kjdautils.internal.command.Pass
-import me.aberrantfox.kjdautils.internal.command.precondition
+import me.jakejmattson.discordkt.api.dsl.preconditions.Precondition
+import me.jakejmattson.discordkt.api.dsl.command.CommandEvent
+import me.jakejmattson.discordkt.api.dsl.preconditions.Fail
+import me.jakejmattson.discordkt.api.dsl.preconditions.Pass
+import me.jakejmattson.discordkt.api.dsl.preconditions.PreconditionResult
 
-@Precondition
-fun isOwner(configuration: BotConfiguration) = precondition { event ->
-    if(event.author.id != configuration.owner) Fail("Commands can only be used by the bot owner.") else Pass
+class isOwnerPrecondition(private val configuration: BotConfiguration): Precondition() {
+    override fun evaluate(event: CommandEvent<*>): PreconditionResult {
+        if(event.author.id != configuration.owner) {
+            return Fail("Commands can only be used by the bot owner.")
+        }
+        return Pass
+    }
 }

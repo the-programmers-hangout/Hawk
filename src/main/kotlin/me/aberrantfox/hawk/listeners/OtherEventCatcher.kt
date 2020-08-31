@@ -5,7 +5,7 @@ import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.aberrantfox.hawk.botdata.Messages
 import me.aberrantfox.hawk.extensions.jda.ensureCorrectEffectiveName
 import me.aberrantfox.hawk.extensions.jda.ensureCorrectEffectivePartyName
-import me.aberrantfox.kjdautils.extensions.jda.toMember
+import me.jakejmattson.discordkt.api.extensions.jda.toMember
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent

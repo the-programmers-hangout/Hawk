@@ -2,14 +2,13 @@ package me.aberrantfox.hawk
 
 import com.google.gson.Gson
 import me.aberrantfox.hawk.configuration.BotConfiguration
-import me.aberrantfox.kjdautils.api.getInjectionObject
-import me.aberrantfox.kjdautils.api.startBot
-import me.aberrantfox.kjdautils.extensions.jda.fullName
+import me.jakejmattson.discordkt.api.dsl.bot
+import me.jakejmattson.discordkt.api.extensions.jda.fullName
 import java.awt.Color
 import java.util.*
 import kotlin.system.exitProcess
 
-data class Properties(val author: String, val version: String, val kutils: String, val repository: String)
+data class Properties(val author: String, val version: String, val discordKt: String, val repository: String)
 private val propFile = Properties::class.java.getResource("/properties.json").readText()
 val project: Properties = Gson().fromJson(propFile, Properties::class.java)
 val startTime = Date()
@@ -22,9 +21,9 @@ fun main(args: Array<String>) {
         exitProcess(-1)
     }
 
-    startBot(token, globalPath = "me.aberrantfox.hawk.") {
+    bot(token) {
         configure {
-            val configuration: BotConfiguration = discord.getInjectionObject<BotConfiguration>()!!
+            val configuration = it.getInjectionObjects(BotConfiguration::class)
             prefix { configuration.botPrefix }
             allowMentionPrefix = true
 
@@ -49,18 +48,18 @@ fun main(args: Array<String>) {
                     thumbnail = self.effectiveAvatarUrl
                     addField(self.fullName(), "A bot to add and maintain a symbol as a prefix or suffix in staff names.")
                     addInlineField("Prefix", configuration.botPrefix)
-                    addInlineField("Ping", "${discord.jda.gatewayPing}ms")
 
                     addField("Config Info", "```" +
+                            "Enabled: ${configuration.enabled}\n" +
                             "Mode: ${configuration.mode}\n" +
                             "Role: ${configuration.staffRole}\n" +
                             "Symbol: ${configuration.nickSymbol}\n" +
-                            "Enabled: ${configuration.enabled}" +
+                            "PartySuffix: ${configuration.partySuffix}" +
                             "```")
 
                     addField("Build Info", "```" +
                             "Version: $version\n" +
-                            "KUtils: $kutils\n" +
+                            "DiscordKt: $discordKt\n" +
                             "Kotlin: $kotlinVersion" +
                             "```")
 

@@ -3,9 +3,9 @@ package me.aberrantfox.hawk.extensions.jda
 import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.aberrantfox.hawk.botdata.Messages
 import me.aberrantfox.hawk.extensions.stdlib.inject
-import me.aberrantfox.kjdautils.extensions.jda.fullName
-import me.aberrantfox.kjdautils.extensions.jda.getHighestRole
-import me.aberrantfox.kjdautils.extensions.jda.sendPrivateMessage
+import me.jakejmattson.discordkt.api.extensions.jda.fullName
+import me.jakejmattson.discordkt.api.extensions.jda.getHighestRole
+import me.jakejmattson.discordkt.api.extensions.jda.sendPrivateMessage
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 
