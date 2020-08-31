@@ -5,6 +5,7 @@ import me.jakejmattson.discordkt.api.dsl.data.Data
 data class BotConfiguration(
         val guild: String = "<insert-guild>",
         var owner: String = "<insert-id>",
+        var adminRole: String = "<insert-id>",
         var botPrefix: String = "hawk!",
         var nickSymbol: String = "\uD83D\uDD28 ",
         var enabled: Boolean = true,

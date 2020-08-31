@@ -36,15 +36,6 @@ fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
         }
     }
 
-    command("setOwner") {
-        description = "Set the owner & admin of the bot."
-        execute(MemberArg) {
-            botConfiguration.owner = it.args.first.id
-            botConfiguration.save()
-            it.respond("Set the bots owner to **${it.args.first.user.asTag}**")
-        }
-    }
-
     command("setPrefix") {
         description = "Set the bot's invocation prefix"
         execute(AnyArg("Prefix")) {

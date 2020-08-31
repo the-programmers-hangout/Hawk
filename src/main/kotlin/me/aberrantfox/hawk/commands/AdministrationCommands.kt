@@ -2,19 +2,11 @@ package me.aberrantfox.hawk.commands
 
 import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.jakejmattson.discordkt.api.annotations.CommandSet
+import me.jakejmattson.discordkt.api.arguments.RoleArg
 import me.jakejmattson.discordkt.api.dsl.command.commands
 
 @CommandSet("Admin")
 fun createAdministrationCommands(botConfiguration: BotConfiguration) = commands {
-    command("toggle") {
-        description = "Toggles the bot functionality"
-        execute {
-            botConfiguration.enabled = !botConfiguration.enabled
-            botConfiguration.save()
-            it.respond("Bot has been turned **${if(botConfiguration.enabled) "On" else "Off"}**")
-        }
-    }
-
     command("enable") {
         description = "Enable the bot"
         execute {
@@ -33,5 +25,12 @@ fun createAdministrationCommands(botConfiguration: BotConfiguration) = commands 
         }
     }
 
-
+    command("setAdminRole") {
+        description = "Set the admin role for the bot."
+        execute(RoleArg) {
+            botConfiguration.adminRole = it.args.first.name
+            botConfiguration.save()
+            it.respond("Set the admin role to **${it.args.first.name}**")
+        }
+    }
 }

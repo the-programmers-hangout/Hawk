@@ -6,17 +6,16 @@
 | (Argument)  | Argument is not required.      |
 
 ## Admin
-| Commands | Arguments | Description                   |
-| -------- | --------- | ----------------------------- |
-| disable  |           | Disable the bot               |
-| enable   |           | Enable the bot                |
-| toggle   |           | Toggles the bot functionality |
+| Commands     | Arguments | Description                     |
+| ------------ | --------- | ------------------------------- |
+| disable      |           | Disable the bot                 |
+| enable       |           | Enable the bot                  |
+| setAdminRole | Role      | Set the admin role for the bot. |
 
 ## Config
 | Commands  | Arguments | Description                                   |
 | --------- | --------- | --------------------------------------------- |
 | setMode   | mode      | Set the mode to prefix or suffix              |
-| setOwner  | Member    | Set the owner & admin of the bot.             |
 | setPrefix | Prefix    | Set the bot's invocation prefix               |
 | setRole   | Role      | Set the role that will have symbols enforced. |
 | setSymbol | Symbol    | Set the token to appear in nicknames.         |
