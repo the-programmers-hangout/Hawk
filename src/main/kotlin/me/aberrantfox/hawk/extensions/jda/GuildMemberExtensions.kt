@@ -21,8 +21,8 @@ fun Member.isHigherThan(other: Member): Boolean {
         return true
     }
 
-    val ourHighest = getHighestRole()!!.position
-    val theirHighest = other.getHighestRole()!!.position
+    val ourHighest = getHighestRole().position
+    val theirHighest = other.getHighestRole().position
 
     return ourHighest > theirHighest
 }
