@@ -6,11 +6,11 @@
 
     <groupId>org.example</groupId>
     <artifactId>Hawk</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
 
     <properties>
         <kotlin.version>1.3.71</kotlin.version>
-        <kutils.version>0.16.0</kutils.version>
+        <discordKt.version>0.19.1</discordKt.version>
         <project.repository>https://github.com/the-programmers-hangout/Hawk</project.repository>
     </properties>
 
@@ -27,9 +27,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.gitlab.aberrantfox</groupId>
-            <artifactId>KUtils</artifactId>
-            <version>${kutils.version}</version>
+            <groupId>me.jakejmattson</groupId>
+            <artifactId>DiscordKt</artifactId>
+            <version>${discordKt.version}</version>
         </dependency>
     </dependencies>
 

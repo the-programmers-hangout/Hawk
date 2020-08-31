@@ -1,8 +1,7 @@
 package me.aberrantfox.hawk.configuration
 
-import me.aberrantfox.kjdautils.api.annotation.Data
+import me.jakejmattson.discordkt.api.dsl.data.Data
 
-@Data("data/configuration.json")
 data class BotConfiguration(
         val guild: String = "<insert-guild>",
         var owner: String = "<insert-id>",
@@ -15,4 +14,4 @@ data class BotConfiguration(
         var partyMode: Boolean = false,
         var partySuffix: String = "\ud83e\udd73 ",
         var partyStrip: String = "\ud83e\udd73"
-)
+): Data("data/configuration.json")
