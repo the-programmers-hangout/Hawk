@@ -8,6 +8,7 @@ import me.jakejmattson.discordkt.api.extensions.jda.getHighestRole
 import me.jakejmattson.discordkt.api.extensions.jda.sendPrivateMessage
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.TextChannel
 
 fun Member.isStaffMember(guild: Guild, configuration: BotConfiguration) =
         roles.any { it.name == configuration.staffRole } || isOwner
@@ -65,12 +66,20 @@ fun Member.ensureHammer(configuration: BotConfiguration, selfMember: Member, mes
     }
 }
 
-fun Member.ensureCorrectEffectivePartyName(guild: Guild, configuration: BotConfiguration, messages: Messages, action: (Member) -> Unit = {}) {
+fun Member.ensureCorrectEffectivePartyName(guild: Guild, configuration: BotConfiguration, messages: Messages, channel: TextChannel, action: (Member) -> Unit = {}) {
     if (!(configuration.enabled)) {
         return
     }
 
     if (this.id == guild.selfMember.id) {
+        return
+    }
+
+    if (isHigherThan(guild.selfMember)) {
+        return
+    }
+
+    if (configuration.partyModeChannelFilter && !configuration.partyModeChannels.contains(channel.id)) {
         return
     }
     

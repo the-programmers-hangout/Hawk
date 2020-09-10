@@ -14,5 +14,7 @@ data class BotConfiguration(
         var mode: String = "suffix",
         var partyMode: Boolean = false,
         var partySuffix: String = "\ud83e\udd73 ",
-        var partyStrip: String = "\ud83e\udd73"
+        var partyStrip: String = "\ud83e\udd73",
+        var partyModeChannels: MutableList<String> = mutableListOf(),
+        var partyModeChannelFilter: Boolean = false
 ): Data("data/configuration.json")
