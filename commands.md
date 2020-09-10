@@ -21,11 +21,13 @@
 | setSymbol | Symbol    | Set the token to appear in nicknames.         |
 
 ## Party
-| Commands       | Arguments | Description                       |
-| -------------- | --------- | --------------------------------- |
-| getPartySuffix |           | Display current party mode suffix |
-| setPartySuffix | Suffix    | Set new party mode suffix         |
-| toggleParty    |           | Toggles party mode                |
+| Commands            | Arguments                    | Description                                     |
+| ------------------- | ---------------------------- | ----------------------------------------------- |
+| getPartySuffix      |                              | Display current party mode suffix               |
+| partyChannels       | add/rem/list, (Text Channel) | Add, remove or view channels used in party mode |
+| setPartySuffix      | Suffix                       | Set new party mode suffix                       |
+| toggleParty         |                              | Toggles party mode                              |
+| togglePartyChannels |                              | Toggle channel based filtering for party mode   |
 
 ## Utility
 | Commands | Arguments | Description          |

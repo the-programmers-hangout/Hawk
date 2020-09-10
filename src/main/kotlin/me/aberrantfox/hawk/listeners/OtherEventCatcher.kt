@@ -27,7 +27,7 @@ class OtherEventCatcher(val configuration: BotConfiguration, val messages: Messa
 
     @Subscribe
     fun onGuildMessageEvent(event: GuildMessageReceivedEvent) {
-        event.member?.ensureCorrectEffectivePartyName(event.guild, configuration, messages)
+        event.member?.ensureCorrectEffectivePartyName(event.guild, configuration, messages, event.channel)
         event.member?.ensureCorrectEffectiveName(event.guild, configuration, messages)
     }
 
