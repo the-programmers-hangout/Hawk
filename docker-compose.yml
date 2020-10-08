@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  starter:
+  Hawk:
     container_name: Hawk
     build:
       dockerfile: Dockerfile
