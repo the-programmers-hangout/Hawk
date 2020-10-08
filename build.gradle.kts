@@ -27,7 +27,7 @@ tasks {
         archiveFileName.set("Hawk.jar")
         manifest {
             attributes(
-                    "Main-Class" to "me.aberrantfox.hawk"
+                    "Main-Class" to "me.aberrantfox.hawk.MainKt"
             )
         }
     }
