@@ -7,8 +7,8 @@ services:
       context: .
     volumes:
       - type: bind
-        source: ./data/config.json
-        target: /config/config.json
+        source: ./data/configuration.json
+        target: /data/configuration.json
     restart: always
     env_file:
       - .env
