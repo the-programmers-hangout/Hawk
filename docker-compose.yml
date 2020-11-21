@@ -2,9 +2,7 @@ version: '3.7'
 services:
   hawk:
     container_name: Hawk
-    build:
-      dockerfile: Dockerfile
-      context: .
+    image: theprogrammershangout/hawk:latest
     volumes:
       - type: bind
         source: ./data/configuration.json
