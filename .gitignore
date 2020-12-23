@@ -1,10 +1,13 @@
-# .idea/intellij specific stuff
+# IntelliJ #
 .idea/
-*.iml
+**.iml
 
-target/
-data/
-
-.env
+# Gradle #
 .gradle
 build
+
+# Project #
+data/
+config/*
+
+.env

@@ -1,6 +1,0 @@
-{
-  "author": "${project.author}",
-  "version": "${version}",
-  "discordKt": "${discordKt.version}",
-  "repository": "${project.repository}"
-}

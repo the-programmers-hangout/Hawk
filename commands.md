@@ -5,29 +5,13 @@
 | ----------- | ------------------------------ |
 | (Argument)  | Argument is not required.      |
 
-## Admin
-| Commands     | Arguments | Description                     |
-| ------------ | --------- | ------------------------------- |
-| disable      |           | Disable the bot                 |
-| enable       |           | Enable the bot                  |
-| setAdminRole | Role      | Set the admin role for the bot. |
-
-## Config
-| Commands  | Arguments | Description                                   |
-| --------- | --------- | --------------------------------------------- |
-| setMode   | mode      | Set the mode to prefix or suffix              |
-| setPrefix | Prefix    | Set the bot's invocation prefix               |
-| setRole   | Role      | Set the role that will have symbols enforced. |
-| setSymbol | Symbol    | Set the token to appear in nicknames.         |
-
-## Party
-| Commands            | Arguments                    | Description                                     |
-| ------------------- | ---------------------------- | ----------------------------------------------- |
-| getPartySuffix      |                              | Display current party mode suffix               |
-| partyChannels       | add/rem/list, (Text Channel) | Add, remove or view channels used in party mode |
-| setPartySuffix      | Suffix                       | Set new party mode suffix                       |
-| toggleParty         |                              | Toggles party mode                              |
-| togglePartyChannels |                              | Toggle channel based filtering for party mode   |
+## Configuration
+| Commands     | Arguments | Description                        |
+| ------------ | --------- | ---------------------------------- |
+| setadminrole | Role      | Set the bot admin role.            |
+| setprefix    | Text      | Set the bot prefix.                |
+| setstaffrole | Role      | Set the bot staff role.            |
+| setup        |           | Configure a guild to use this bot. |
 
 ## Utility
 | Commands | Arguments | Description          |

@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "me.abberantfox"
+group = "me.ddivad"
 version = Versions.BOT
-description = "A bot to add and maintain a symbol as a prefix or suffix in staff names."
+description = "Hawk"
 
 plugins {
     kotlin("jvm") version "1.4.10"
@@ -27,7 +27,7 @@ tasks {
         archiveFileName.set("Hawk.jar")
         manifest {
             attributes(
-                    "Main-Class" to "me.aberrantfox.hawk.MainKt"
+                    "Main-Class" to "me.ddivad.hawk.MainKt"
             )
         }
     }
@@ -35,6 +35,6 @@ tasks {
 
 
 object Versions {
-    const val BOT = "1.2.0"
-    const val DISCORDKT = "0.19.1"
+    const val BOT = "1.0.0"
+    const val DISCORDKT = "0.21.0"
 }
