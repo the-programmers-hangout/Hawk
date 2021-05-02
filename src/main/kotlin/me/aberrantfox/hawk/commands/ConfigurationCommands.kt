@@ -4,6 +4,8 @@ import me.aberrantfox.hawk.configuration.BotConfiguration
 import me.jakejmattson.discordkt.api.annotations.CommandSet
 import me.jakejmattson.discordkt.api.arguments.*
 import me.jakejmattson.discordkt.api.dsl.command.commands
+import me.jakejmattson.discordkt.api.dsl.embed.embed
+import net.dv8tion.jda.api.entities.MessageEmbed
 
 @CommandSet("Config")
 fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
@@ -42,6 +44,46 @@ fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
             botConfiguration.botPrefix = it.args.first
             botConfiguration.save()
             it.respond("Set the bots owner prefix to **${it.args.first}**")
+        }
+    }
+
+    command("blacklist") {
+        description = "Add a symbol to the symbol blacklist."
+        execute(ChoiceArg("add/rem/list", "add", "rem", "view"),
+            AnyArg("symbol").makeNullableOptional(null)) {
+            val(choice, symbol) = it.args
+            when(choice) {
+                "add" -> {
+                    if (botConfiguration.disallowedSymbols.contains(symbol)) {
+                        it.respond("${it.args.first} is already blacklisted")
+                        return@execute
+                    }
+                    botConfiguration.disallowedSymbols.add(symbol!!.replace(" ", ""))
+                    botConfiguration.save()
+                    it.respond("Added **${symbol}** to blacklist.")
+                }
+
+                "rem" -> {
+                    if (!botConfiguration.disallowedSymbols.contains(symbol)) {
+                        it.respond("${it.args.first} is not blacklisted")
+                        return@execute
+                    }
+                    botConfiguration.disallowedSymbols.remove(symbol!!.replace(" ", ""))
+                    botConfiguration.save()
+                    it.respond("Removed **${symbol}** from blacklist.")
+
+                }
+
+                "view" -> {
+                    it.respond(embed {
+                        color = infoColor
+                        addField("**Blacklisted Symbols**", botConfiguration.disallowedSymbols.joinToString(" , ") )
+                    })
+                }
+                else -> {
+                    it.respond("Invalid choice")
+                }
+            }
         }
     }
 }

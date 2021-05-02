@@ -13,12 +13,13 @@
 | setAdminRole | Role      | Set the admin role for the bot. |
 
 ## Config
-| Commands  | Arguments | Description                                   |
-| --------- | --------- | --------------------------------------------- |
-| setMode   | mode      | Set the mode to prefix or suffix              |
-| setPrefix | Prefix    | Set the bot's invocation prefix               |
-| setRole   | Role      | Set the role that will have symbols enforced. |
-| setSymbol | Symbol    | Set the token to appear in nicknames.         |
+| Commands  | Arguments              | Description                                   |
+| --------- | ---------------------- | --------------------------------------------- |
+| blacklist | add/rem/list, (symbol) | Add a symbol to the symbol blacklist.         |
+| setMode   | mode                   | Set the mode to prefix or suffix              |
+| setPrefix | Prefix                 | Set the bot's invocation prefix               |
+| setRole   | Role                   | Set the role that will have symbols enforced. |
+| setSymbol | Symbol                 | Set the token to appear in nicknames.         |
 
 ## Party
 | Commands            | Arguments                    | Description                                     |
