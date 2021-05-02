@@ -29,7 +29,11 @@ fun Member.isHigherThan(other: Member): Boolean {
 }
 
 fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, action: (Member) -> Unit = {}) {
-    if (!(effectiveName.contains(configuration.stripString))) {
+//    if (!(effectiveName.contains(configuration.stripString))) {
+//        return
+//    }
+
+    if(!configuration.disallowedSymbols.any { effectiveName.contains(it) }) {
         return
     }
 
@@ -87,6 +91,7 @@ fun Member.ensureCorrectEffectivePartyName(guild: Guild, configuration: BotConfi
 }
 
 fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfiguration, messages: Messages, action: (Member) -> Unit = {}) {
+    println("fired")
     if (!(configuration.enabled)) {
         return
     }
@@ -110,7 +115,7 @@ fun Member.setPartySuffix(configuration: BotConfiguration) {
             println("Added party suffix for ${this.fullName()}")
         }
     } else if (!configuration.partyMode && userPartying){
-        val nick = removeNickPrefix(effectiveName, configuration.partyStrip)
+        val nick = removeNickPrefix(effectiveName, mutableListOf(configuration.partyStrip))
         modifyNickname(nick).queue {
             println("Removed party suffix for ${this.fullName()}")
         }
@@ -121,7 +126,7 @@ fun Member.determineNewNickName(configuration: BotConfiguration) =
         if (isStaffMember(guild, configuration)) {
             applyNickPrefix(effectiveName, configuration.nickSymbol, configuration.stripString, configuration.mode)
         } else {
-            removeNickPrefix(effectiveName, configuration.stripString)
+            removeNickPrefix(effectiveName, configuration.disallowedSymbols)
         }
 
 fun applyNickPrefix(name: String, symbol: String, stripString: String, mode: String): String {
@@ -151,13 +156,19 @@ fun applyNickPrefix(name: String, symbol: String, stripString: String, mode: Str
     }
 }
 
-fun removeNickPrefix(name: String, prefix: String): String {
-    val strippedName = name.replace(prefix, "")
+fun removeNickPrefix(name: String, disallowedSymbols: MutableList<String>): String {
+    var strippedName = name
+
+    for (symbol in disallowedSymbols) {
+        strippedName = strippedName.replace(symbol, "")
+        println(symbol)
+        println("$name $strippedName")
+    }
 
     return if (strippedName.isBlank() || strippedName == "") {
         "Chunck Testa"
     } else {
-        name.replace(prefix, "")
+        strippedName
     }
 }
 
