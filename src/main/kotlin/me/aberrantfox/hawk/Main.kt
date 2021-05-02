@@ -48,7 +48,7 @@ fun main(args: Array<String>) {
                         "```")
 
                 addField("Build Info", "```" +
-                        "Version: 1.4.0\n" +
+                        "Version: 1.5.0\n" +
                         "DiscordKt: 0.19.1\n" +
                         "Kotlin: $kotlinVersion" +
                         "```")
