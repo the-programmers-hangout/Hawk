@@ -87,7 +87,6 @@ fun Member.ensureCorrectEffectivePartyName(guild: Guild, configuration: BotConfi
 }
 
 fun Member.ensureCorrectEffectiveName(guild: Guild, configuration: BotConfiguration, messages: Messages, action: (Member) -> Unit = {}) {
-    println("fired")
     if (!(configuration.enabled)) {
         return
     }
