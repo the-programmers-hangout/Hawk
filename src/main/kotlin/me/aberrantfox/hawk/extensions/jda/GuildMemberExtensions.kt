@@ -156,8 +156,6 @@ fun removeNickPrefix(name: String, disallowedSymbols: MutableList<String>): Stri
 
     for (symbol in disallowedSymbols) {
         strippedName = strippedName.replace(symbol, "")
-        println(symbol)
-        println("$name $strippedName")
     }
 
     return if (strippedName.isBlank() || strippedName == "") {
