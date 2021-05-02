@@ -29,10 +29,6 @@ fun Member.isHigherThan(other: Member): Boolean {
 }
 
 fun Member.ensureNoHammer(configuration: BotConfiguration, selfMember: Member, action: (Member) -> Unit = {}) {
-//    if (!(effectiveName.contains(configuration.stripString))) {
-//        return
-//    }
-
     if(!configuration.disallowedSymbols.any { effectiveName.contains(it) }) {
         return
     }
