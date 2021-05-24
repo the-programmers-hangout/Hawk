@@ -55,7 +55,7 @@ fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
             when(choice) {
                 "add" -> {
                     if (botConfiguration.disallowedSymbols.contains(symbol)) {
-                        it.respond("${it.args.first} is already blacklisted")
+                        it.respond("${symbol} is already blacklisted")
                         return@execute
                     }
                     botConfiguration.disallowedSymbols.add(symbol!!.replace(" ", ""))
@@ -65,7 +65,7 @@ fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
 
                 "rem" -> {
                     if (!botConfiguration.disallowedSymbols.contains(symbol)) {
-                        it.respond("${it.args.first} is not blacklisted")
+                        it.respond("${symbol} is not blacklisted")
                         return@execute
                     }
                     botConfiguration.disallowedSymbols.remove(symbol!!.replace(" ", ""))
