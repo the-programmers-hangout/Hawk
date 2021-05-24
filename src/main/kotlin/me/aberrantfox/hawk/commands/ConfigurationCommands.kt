@@ -49,7 +49,7 @@ fun createConfigCommands(botConfiguration: BotConfiguration) = commands {
 
     command("blacklist") {
         description = "Add a symbol to the symbol blacklist."
-        execute(ChoiceArg("add/rem/list", "add", "rem", "view"),
+        execute(ChoiceArg("add/rem/view", "add", "rem", "view"),
             AnyArg("symbol").makeNullableOptional(null)) {
             val(choice, symbol) = it.args
             when(choice) {
