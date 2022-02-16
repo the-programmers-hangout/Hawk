@@ -8,7 +8,7 @@ import me.jakejmattson.discordkt.commands.CommandEvent
 import me.jakejmattson.discordkt.extensions.isSelf
 import me.jakejmattson.discordkt.extensions.toSnowflakeOrNull
 
-open class LowerMemberArg(override val name: String = "LowerMemberArg") : Argument<Member> {
+open class LowerMemberArg(override val name: String = "LowerMemberArg") : MemberArg() {
     companion object : LowerMemberArg()
 
     override val description = "A Member with a lower rank"

@@ -7,6 +7,7 @@ import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.BotStatsService
+import me.ddivad.hawk.services.StartupService
 import me.jakejmattson.discordkt.dsl.bot
 import me.jakejmattson.discordkt.extensions.addInlineField
 import me.jakejmattson.discordkt.extensions.pfpUrl
@@ -76,6 +77,16 @@ suspend fun main() {
             field {
                 name = "Ping"
                 value = botStats.ping
+            }
+        }
+        onStart {
+            val startupService = this.getInjectionObjects(
+                StartupService::class
+            )
+            try {
+                startupService.refreshReactionRoleInteractions()
+            } catch (ex: Exception) {
+                println(ex.message)
             }
         }
     }

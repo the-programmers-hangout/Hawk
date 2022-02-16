@@ -114,7 +114,8 @@ fun guildConfigCommands(configuration: Configuration) = commands("Configuration"
                     name = "**Party**"
                     value = "Enabled: ${guildConfiguration.partyModeConfiguration.enabled}\n" +
                             "Symbol: ${guildConfiguration.partyModeConfiguration.symbol}\n" +
-                            "Channel Filter Enabled: ${guildConfiguration.partyModeConfiguration.channelFilterEnabled}"
+                            "Channel Filter Enabled: ${guildConfiguration.partyModeConfiguration.channelFilterEnabled}\n" +
+                            "Party Channels: ${guildConfiguration.partyModeConfiguration.channels.map {guild.getChannel(it).mention}.joinToString(", ") }"
                 }
             }
         }

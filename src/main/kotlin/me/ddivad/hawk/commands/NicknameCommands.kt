@@ -4,6 +4,7 @@ import dev.kord.core.behavior.edit
 import me.ddivad.hawk.arguments.LowerMemberArg
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.Permissions
+import me.ddivad.hawk.services.LoggingService
 import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
 import me.jakejmattson.discordkt.arguments.EveryArg
@@ -11,20 +12,22 @@ import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.extensions.addField
 
 @Suppress("unused")
-fun nicknameCommands(configuration: Configuration) = commands("Nickname") {
-    slash("nick") {
-        description = "Set a member's nickname"
-        requiredPermission = Permissions.STAFF
-        execute(LowerMemberArg, EveryArg("Nickname")) {
-            val (member, nickname) = args
-            if (nickname.length > 32) {
-                respond("Nickname needs to be < 32 characters")
-                return@execute
-            }
-            member.edit { this.nickname = nickname }
-            respond("Nickname set to **$nickname**")
-        }
-    }
+fun nicknameCommands(configuration: Configuration, loggingService: LoggingService
+) = commands("Nickname") {
+//    slash("nick") {
+//        description = "Set a member's nickname"
+//        requiredPermission = Permissions.STAFF
+//        execute(LowerMemberArg, EveryArg("Nickname")) {
+//            val (member, nickname) = args
+//            if (nickname.length > 32) {
+//                respond("Nickname needs to be < 32 characters")
+//                return@execute
+//            }
+//            member.edit { this.nickname = nickname }
+//            respond("Nickname set to **$nickname**")
+//            loggingService.nicknameApplied(guild, member, nickname)
+//        }
+//    }
 
     slash("blocklist") {
         description = "Add a symbol to the symbol blocklist."

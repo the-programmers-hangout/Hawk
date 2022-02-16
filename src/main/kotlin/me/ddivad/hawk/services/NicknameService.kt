@@ -8,8 +8,7 @@ import me.ddivad.hawk.dataclasses.Configuration
 import me.jakejmattson.discordkt.annotations.Service
 
 @Service
-class NicknameService(private val configuration: Configuration) {
-
+class NicknameService(private val configuration: Configuration, private val loggingService: LoggingService) {
     suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
 
@@ -20,10 +19,10 @@ class NicknameService(private val configuration: Configuration) {
         val hasPartyNicknameApplied = member.displayName.endsWith(partyConfiguration.symbol) || member.displayName.endsWith(partyConfiguration.symbolStrip)
         if (!hasPartyNicknameApplied && partyConfiguration.enabled) {
             val nickname = addNickSymbol(member.displayName, partyConfiguration.symbol, partyConfiguration.symbolStrip)
-            changeMemberNickname(member, nickname)
+            changeMemberNickname(guild, member, nickname)
         } else if (hasPartyNicknameApplied && !partyConfiguration.enabled) {
             val nickname = removeNickSymbol(member.displayName, mutableListOf(partyConfiguration.symbolStrip))
-            changeMemberNickname(member, nickname)
+            changeMemberNickname(guild, member, nickname)
         }
     }
 
@@ -35,7 +34,8 @@ class NicknameService(private val configuration: Configuration) {
         }
 
         val nickname = removeNickSymbol(member.displayName, guildConfiguration.disallowedNicknameSymbols)
-        changeMemberNickname(member, nickname)
+        loggingService.blocklistedSymbolRemoved(guild, member)
+        changeMemberNickname(guild, member, nickname)
     }
 
     private fun addNickSymbol(nickname: String, symbol: String, stripString: String): String {
@@ -68,7 +68,8 @@ class NicknameService(private val configuration: Configuration) {
         }
     }
 
-    private suspend fun changeMemberNickname(member: Member, nickname: String): Member {
+    private suspend fun changeMemberNickname(guild: Guild, member: Member, nickname: String): Member {
+        loggingService.nicknameApplied(guild, member, nickname)
         return member.edit { this.nickname = nickname }
     }
 }

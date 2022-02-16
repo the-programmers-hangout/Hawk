@@ -1,5 +1,6 @@
 package me.ddivad.hawk.commands
 
+import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.Permissions
 import me.jakejmattson.discordkt.arguments.ChannelArg
@@ -55,7 +56,7 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
         requiredPermission = Permissions.STAFF
         execute(
             ChoiceArg("PartyChannelOption", "Party channel options", "enable", "disable", "add", "remove", "view"),
-            ChannelArg.optionalNullable(null)
+            ChannelArg<TextChannel>("PartyChannel", "A channel where party mode will apply").optionalNullable(null)
         ) {
             val(choice, channel) = args
             val guildConfiguration = configuration[guild.id] ?: return@execute
@@ -76,6 +77,10 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
                         respond("Received less arguments than expected. Expected: `(Channel)`")
                         return@execute
                     }
+                    if (guildConfiguration.partyModeConfiguration.channels.contains(channel.id)) {
+                        respond("${channel.mention} is already included in the party mode channels")
+                        return@execute
+                    }
 
                     guildConfiguration.partyModeConfiguration.channels.add(channel.id)
                     configuration.save()
@@ -84,6 +89,10 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
                 "remove" -> {
                     if (channel == null) {
                         respond("Received less arguments than expected. Expected: `(Channel)`")
+                        return@execute
+                    }
+                    if (!guildConfiguration.partyModeConfiguration.channels.contains(channel.id)) {
+                        respond("${channel.mention} is not included in the party mode channels")
                         return@execute
                     }
 

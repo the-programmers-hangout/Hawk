@@ -11,71 +11,66 @@ import me.jakejmattson.discordkt.arguments.OptionalArg
 import me.jakejmattson.discordkt.commands.Command
 import me.jakejmattson.discordkt.commands.CommandEvent
 import me.jakejmattson.discordkt.commands.Execution
+import me.jakejmattson.discordkt.dsl.MenuBuilder
 
 @KordPreview
 @Service
 class HelpService {
 
-    suspend fun buildHelpEmbed(event: CommandEvent<*>) = event.respondMenu {
-        val container = event.discord.commands
-        fun joinNames(value: List<Command>) =
-            value.joinToString("\n") { it.names.first() }
+//    suspend fun buildHelpEmbed(event: CommandEvent<*>) = event.respondMenu {
+//        val container = event.discord.commands
+//        fun joinNames(value: List<Command>) =
+//            value.joinToString("\n") { it.names.first() }
+//
+//        val groupedCommands = container
+//            .filter { it.hasPermissionToRun(event) }
+//            .groupBy { it.category }
+//            .toList()
+//            .sortedByDescending { it.second.size }
+//
+//        val categoryNames = container
+//            .filter { it.hasPermissionToRun(event) }
+//            .groupBy { it.category }
+//            .toList()
+//            .sortedByDescending { it.second.size }
+//            .map { it.first }
+//            .toList()
+//
+//        if (groupedCommands.isNotEmpty()) {
+//            groupedCommands.map { (category, commands) ->
+//                val sorted = commands
+//                    .sortedBy { it.names.first() }
+//
+//                page {
+//                    title = "Help - $category Commands"
+//                    description = """
+//                        You have **${commands.size}** commands available based on permissions.
+//
+//                        Use `${event.prefix()}help` <command> for more information
+//                    """.trimIndent()
+//                    color = event.discord.configuration.theme
+//
+//                    field {
+//                        name = "**Commands**"
+//                        value = "```css\n${joinNames(sorted)}\n```"
+//                        inline = true
+//                    }
+//                }
+//            }
+//
+//            categoryNames.chunked(5).forEachIndexed { index, category ->
+//                buttons {
+//                    category.forEachIndexed { page, name ->
+//                        button(name, getEmojiForCategory(name), ButtonStyle.Secondary) {
+//                            loadPage(page + index * 5)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-        val groupedCommands = container
-            .filter { it.hasPermissionToRun(event) }
-            .groupBy { it.category }
-            .toList()
-            .sortedByDescending { it.second.size }
 
-        val categoryNames = container
-            .filter { it.hasPermissionToRun(event) }
-            .groupBy { it.category }
-            .toList()
-            .sortedByDescending { it.second.size }
-            .map { it.first }
-            .toList()
-
-        if (groupedCommands.isNotEmpty()) {
-            groupedCommands.map { (category, commands) ->
-                val sorted = commands
-                    .sortedBy { it.names.first() }
-
-                page {
-                    title = "Help - $category Commands"
-                    description = """
-                        You have **${commands.size}** commands available based on permissions.
-
-                        Use `${event.prefix()}help` <command> for more information
-                    """.trimIndent()
-                    color = event.discord.configuration.theme
-
-                    field {
-                        name = "**Commands**"
-                        value = "```css\n${joinNames(sorted)}\n```"
-                        inline = true
-                    }
-                }
-            }
-
-            categoryNames.chunked(5).forEachIndexed { index, category ->
-                buttons {
-                    category.forEachIndexed { page, name ->
-                        button(name, getEmojiForCategory(name), ButtonStyle.Secondary) {
-                            loadPage(page + index * 5)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getEmojiForCategory(categoryName: String): DiscordEmoji.Generic? {
-        return when(categoryName) {
-            "Configuration" -> Emojis.hammerAndPick
-            "Utility" -> Emojis.toolbox
-            else -> null
-        }
-    }
 
     suspend fun sendHelpEmbed(event: CommandEvent<*>, command: Command) = event.respond {
         color = event.discord.configuration.theme

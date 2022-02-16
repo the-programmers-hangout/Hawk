@@ -47,7 +47,8 @@ data class GuildConfiguration(
     var adminRoleId: Snowflake? = null,
     var disallowedNicknameSymbols: MutableList<String> = mutableListOf(),
     var partyModeConfiguration: PartyModeConfiguration = PartyModeConfiguration(),
-    var loggingConfiguration: LoggingConfiguration = LoggingConfiguration()
+    var loggingConfiguration: LoggingConfiguration = LoggingConfiguration(),
+    var reactionRoles: MutableList<ReactionRole> = mutableListOf()
 )
 
 @Serializable
@@ -63,4 +64,13 @@ data class PartyModeConfiguration(
 data class LoggingConfiguration(
     var logChannel: Snowflake? = null,
     var alertChannel: Snowflake? = null
+)
+
+@Serializable
+data class ReactionRole(
+    val id: Int,
+    val description: String,
+    val roles: MutableList<Snowflake>,
+    var messageId: Snowflake?,
+    val channel: Snowflake
 )
