@@ -5,9 +5,9 @@ services:
     image: theprogrammershangout/hawk:latest
     volumes:
       - type: bind
-        source: ./config/config.json
-        target: /config/config.json
-    restart: always
+        source: ./data/config.json
+        target: /data/config.json
+    restart: unless-stopped
     env_file:
       - .env
 

@@ -22,7 +22,7 @@ suspend fun main() {
     require(token != null) { "Expected the bot token as an environment variable" }
 
     bot(token) {
-        val configuration = data("config/config.json") { Configuration() }
+        val configuration = data("data/config.json") { Configuration() }
 
         prefix {
             guild?.let { configuration[it.id]?.prefix } ?: prefix

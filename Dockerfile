@@ -4,7 +4,7 @@ WORKDIR /hawk
 RUN gradle shadowJar --no-daemon
 
 FROM openjdk:11.0.8-jre-slim
-RUN mkdir /config/
+RUN mkdir /data/
 COPY --from=build /hawk/build/libs/Hawk.jar /
 RUN dir
 
