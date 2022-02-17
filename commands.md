@@ -19,7 +19,6 @@
 | Commands  | Arguments                  | Description                           |
 | --------- | -------------------------- | ------------------------------------- |
 | blocklist | BloclklistOption, [symbol] | Add a symbol to the symbol blocklist. |
-| nick      | LowerMemberArg, Nickname   | Set a member's nickname               |
 
 ## Party
 | Commands           | Arguments                          | Description                                     |
