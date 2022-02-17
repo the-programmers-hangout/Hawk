@@ -19,7 +19,7 @@ class LoggingService(private val config: Configuration) {
     }
 
     fun reactionRoleRemoved(guild: Guild, member: Member, role: Role) = withLog(guild) {
-        "**Info**: Role **${role.name}** added to ${member.idDescriptor()}"
+        "**Info**: Role **${role.name}** removed from ${member.idDescriptor()}"
     }
 
     fun nicknameApplied(guild: Guild, member: Member, nickname: String) = withLog(guild) {

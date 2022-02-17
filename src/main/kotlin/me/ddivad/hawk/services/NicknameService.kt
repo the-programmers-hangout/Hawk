@@ -12,6 +12,9 @@ class NicknameService(private val configuration: Configuration, private val logg
     suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
 
+        if (partyConfiguration.symbol.isNullOrBlank()) {
+            return
+        }
         if (partyConfiguration.channelFilterEnabled && !partyConfiguration.channels.contains(channel.id)) {
             return
         }
