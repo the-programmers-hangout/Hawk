@@ -3,35 +3,39 @@
 ## Key 
 | Symbol      | Meaning                        |
 | ----------- | ------------------------------ |
-| (Argument)  | Argument is not required.      |
+| [Argument]  | Argument is not required.      |
+| Argument... | Accepts many of this argument. |
 
-## Admin
-| Commands     | Arguments | Description                     |
-| ------------ | --------- | ------------------------------- |
-| disable      |           | Disable the bot                 |
-| enable       |           | Enable the bot                  |
-| setAdminRole | Role      | Set the admin role for the bot. |
+## Configuration
+| Commands      | Arguments              | Description                          |
+| ------------- | ---------------------- | ------------------------------------ |
+| configuration |                        | View the bot configuration           |
+| setChannel    | ChannelChoice, Channel | Set the logging or alert channel     |
+| setPrefix     | Text                   | Set the bot prefix.                  |
+| setRole       | RoleChoice, RoleName   | Set the bot staff or admin role.     |
+| setup         |                        | Setup a configuration for this guild |
 
-## Config
-| Commands  | Arguments              | Description                                   |
-| --------- | ---------------------- | --------------------------------------------- |
-| blacklist | add/rem/list, (symbol) | Add a symbol to the symbol blacklist.         |
-| setMode   | mode                   | Set the mode to prefix or suffix              |
-| setPrefix | Prefix                 | Set the bot's invocation prefix               |
-| setRole   | Role                   | Set the role that will have symbols enforced. |
-| setSymbol | Symbol                 | Set the token to appear in nicknames.         |
+## Nickname
+| Commands  | Arguments                  | Description                           |
+| --------- | -------------------------- | ------------------------------------- |
+| blocklist | BloclklistOption, [symbol] | Add a symbol to the symbol blocklist. |
+| nick      | LowerMemberArg, Nickname   | Set a member's nickname               |
 
 ## Party
-| Commands            | Arguments                    | Description                                     |
-| ------------------- | ---------------------------- | ----------------------------------------------- |
-| getPartySuffix      |                              | Display current party mode suffix               |
-| partyChannels       | add/rem/list, (Text Channel) | Add, remove or view channels used in party mode |
-| setPartySuffix      | Suffix                       | Set new party mode suffix                       |
-| toggleParty         |                              | Toggles party mode                              |
-| togglePartyChannels |                              | Toggle channel based filtering for party mode   |
+| Commands           | Arguments                          | Description                                     |
+| ------------------ | ---------------------------------- | ----------------------------------------------- |
+| getPartySymbol     |                                    | View the current party mode symbol              |
+| partyChannelFilter | PartyChannelOption, [PartyChannel] | Add, remove or view channels used in party mode |
+| setPartySymbol     | Suffix                             | Set new party mode symbol                       |
+| toggleParty        |                                    | Toggles party mode                              |
+
+## ReactionRole
+| Commands           | Arguments               | Description                  |
+| ------------------ | ----------------------- | ---------------------------- |
+| createReactionRole | Roles, EmbedDescription | Create a reaction role embed |
 
 ## Utility
-| Commands | Arguments | Description          |
-| -------- | --------- | -------------------- |
-| Help     | (Command) | Display a help menu. |
+| Commands | Arguments     | Description               |
+| -------- | ------------- | ------------------------- |
+| help     | [CommandName] | Display help information. |
 

@@ -1,12 +1,12 @@
 version: '3.7'
 services:
   hawk:
-    container_name: Hawk
+    container_name: hawk
     image: theprogrammershangout/hawk:latest
     volumes:
       - type: bind
-        source: ./data/configuration.json
-        target: /data/configuration.json
+        source: ./config/config.json
+        target: /config/config.json
     restart: always
     env_file:
       - .env

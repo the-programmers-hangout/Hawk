@@ -1,17 +1,16 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-group = "me.abberantfox"
+group = "me.ddivad"
 version = Versions.BOT
-description = "A bot to add and maintain a symbol as a prefix or suffix in staff names."
+description = ""
 
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 repositories {
     mavenCentral()
-    jcenter()
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -19,7 +18,7 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
+    compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
 
@@ -27,14 +26,13 @@ tasks {
         archiveFileName.set("Hawk.jar")
         manifest {
             attributes(
-                    "Main-Class" to "me.aberrantfox.hawk.MainKt"
+                "Main-Class" to "me.ddivad.hawk.MainKt"
             )
         }
     }
 }
 
-
 object Versions {
-    const val BOT = "1.2.0"
-    const val DISCORDKT = "0.19.1"
+    const val BOT = "1.0.0"
+    const val DISCORDKT = "0.23.0-SNAPSHOT"
 }

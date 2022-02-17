@@ -4,6 +4,7 @@
 
 target/
 data/
+config/
 
 .env
 .gradle
