@@ -15,19 +15,19 @@ import me.jakejmattson.discordkt.extensions.idDescriptor
 class LoggingService(private val config: Configuration) {
 
     fun reactionRoleAdded(guild: Guild, member: Member, role: Role) = withLog(guild) {
-        "**Info**: Role **${role.name}** added to ${member.idDescriptor()}"
+        "**Info** :: Role **${role.name}** added to ${member.idDescriptor()}"
     }
 
     fun reactionRoleRemoved(guild: Guild, member: Member, role: Role) = withLog(guild) {
-        "**Info**: Role **${role.name}** removed from ${member.idDescriptor()}"
+        "**Info** :: Role **${role.name}** removed from ${member.idDescriptor()}"
     }
 
     fun nicknameApplied(guild: Guild, member: Member, nickname: String) = withLog(guild) {
-        "**Info** Nickname $nickname applied to ${member.idDescriptor()}"
+        "**Info** :: Nickname $nickname applied to ${member.idDescriptor()}"
     }
 
     fun blocklistedSymbolRemoved(guild: Guild, member: Member) = withAlert(guild) {
-        "**Info** Blocklisted symbols detected and removed from ${member.idDescriptor()} (${member.displayName})"
+        "**Info** :: Blocklisted symbols detected and removed from ${member.idDescriptor()} (${member.displayName})"
     }
 
     private fun withLog(guild: Guild, f: () -> String) =
