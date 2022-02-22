@@ -36,6 +36,7 @@ suspend fun main() {
             entitySupplyStrategy = EntitySupplyStrategy.cacheWithRestFallback
             permissions = Permissions
             intents = Intents(
+                Intent.Guilds,
                 Intent.GuildMembers
             )
         }
