@@ -1,6 +1,7 @@
 package me.ddivad.hawk
 
 import dev.kord.common.annotation.KordPreview
+import dev.kord.core.supplier.EntitySupplyStrategy
 import dev.kord.gateway.Intent
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
@@ -32,6 +33,7 @@ suspend fun main() {
             allowMentionPrefix = true
             commandReaction = null
             theme = Color.MAGENTA
+            entitySupplyStrategy = EntitySupplyStrategy.cacheWithRestFallback
             permissions = Permissions
             intents = Intents(
                 Intent.GuildMembers
