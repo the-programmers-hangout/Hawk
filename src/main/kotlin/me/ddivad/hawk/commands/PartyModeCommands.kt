@@ -12,10 +12,10 @@ import me.jakejmattson.discordkt.commands.commands
 fun partyModeCommands(configuration: Configuration) = commands("Party") {
     slash("getPartySymbol") {
         description = "View the current party mode symbol"
-        requiredPermission = Permissions.STAFF
+        requiredPermissions = Permissions.STAFF
         execute {
             val guildConfiguration = configuration[guild.id] ?: return@execute
-            respond("Current Symbol: ${guildConfiguration.partyModeConfiguration.symbol}", false)
+            respondPublic("Current Symbol: ${guildConfiguration.partyModeConfiguration.symbol}")
         }
     }
 
@@ -26,10 +26,9 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
 
             guildConfiguration.partyModeConfiguration.enabled = !guildConfiguration.partyModeConfiguration.enabled
             configuration.save()
-            respond(
+            respondPublic(
                 if (guildConfiguration.partyModeConfiguration.enabled) "Let's get this party started! ${guildConfiguration.partyModeConfiguration.symbol}"
-                else "We're done. That's all folks!",
-                false
+                else "We're done. That's all folks!"
             )
         }
     }
@@ -46,14 +45,14 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
                 guildConfiguration.partyModeConfiguration.symbol = "$symbol "
                 guildConfiguration.partyModeConfiguration.symbolStrip = symbol
                 configuration.save()
-                respond("Set the party suffix to **${symbol}**", false)
+                respondPublic("Set the party suffix to **${symbol}**")
             }
         }
     }
 
     slash("partyChannelFilter") {
         description = "Add, remove or view channels used in party mode"
-        requiredPermission = Permissions.STAFF
+        requiredPermissions = Permissions.STAFF
         execute(
             ChoiceArg("PartyChannelOption", "Party channel options", "enable", "disable", "add", "remove", "view"),
             ChannelArg<TextChannel>("PartyChannel", "A channel where party mode will apply").optionalNullable(null)
@@ -65,12 +64,12 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
                 "enable" -> {
                     guildConfiguration.partyModeConfiguration.channelFilterEnabled = true
                     configuration.save()
-                    respond("Channel filter **enabled**")
+                    respondPublic("Channel filter **enabled**")
                 }
                 "disable" -> {
                     guildConfiguration.partyModeConfiguration.channelFilterEnabled = false
                     configuration.save()
-                    respond("Channel filter **disabled**")
+                    respondPublic("Channel filter **disabled**")
                 }
                 "add" -> {
                     if (channel == null) {
@@ -78,30 +77,30 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
                         return@execute
                     }
                     if (guildConfiguration.partyModeConfiguration.channels.contains(channel.id)) {
-                        respond("${channel.mention} is already included in the party mode channels")
+                        respondPublic("${channel.mention} is already included in the party mode channels")
                         return@execute
                     }
 
                     guildConfiguration.partyModeConfiguration.channels.add(channel.id)
                     configuration.save()
-                    respond("**${channel.mention}** is invited to the party!", false)
+                    respondPublic("**${channel.mention}** is invited to the party!")
                 }
                 "remove" -> {
                     if (channel == null) {
-                        respond("Received less arguments than expected. Expected: `(Channel)`")
+                        respondPublic("Received less arguments than expected. Expected: `(Channel)`")
                         return@execute
                     }
                     if (!guildConfiguration.partyModeConfiguration.channels.contains(channel.id)) {
-                        respond("${channel.mention} is not included in the party mode channels")
+                        respondPublic("${channel.mention} is not included in the party mode channels")
                         return@execute
                     }
 
                     guildConfiguration.partyModeConfiguration.channels.remove(channel.id)
                     configuration.save()
-                    respond("Party invitation removed for **${channel.mention}**", false)
+                    respondPublic("Party invitation removed for **${channel.mention}**")
                 }
                 "view" -> {
-                    respond(false) {
+                    respondPublic {
                         color = discord.configuration.theme
                         title = "Party Mode Channels"
                         field {

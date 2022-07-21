@@ -13,13 +13,13 @@ suspend fun MenuBuilder.buildHelpEmbed(event: CommandEvent<*>) {
         value.joinToString("\n") { it.names.first() }
 
     val groupedCommands = container
-        .filter { it.hasPermissionToRun(event) }
+        .filter { it.hasPermissionToRun(event.discord, event.author, event.guild) }
         .groupBy { it.category }
         .toList()
         .sortedByDescending { it.second.size }
 
     val categoryNames = container
-        .filter { it.hasPermissionToRun(event) }
+        .filter { it.hasPermissionToRun(event.discord, event.author, event.guild) }
         .groupBy { it.category }
         .toList()
         .sortedByDescending { it.second.size }

@@ -1,7 +1,8 @@
 package me.ddivad.hawk.commands
 
 import dev.kord.common.annotation.KordPreview
-import dev.kord.core.behavior.interaction.edit
+import dev.kord.core.behavior.edit
+import dev.kord.core.entity.interaction.GuildAutoCompleteInteraction
 import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.embeds.buildHelpEmbed
 import me.ddivad.hawk.services.HelpService
@@ -15,12 +16,19 @@ fun createInformationCommands(helpService: HelpService) = commands("Utility") {
     val commands = discord.commands
     slash("help") {
         description = "Display help information."
-        requiredPermission = Permissions.NONE
-        execute(AnyArg("CommandName", "The command you want to see help for").optionalNullable(null)) {
+        requiredPermissions = Permissions.EVERYONE
+        execute(AnyArg("CommandName", "The command you want to see help for")
+            .autocomplete {
+                discord.commands
+                    .filter { it.hasPermissionToRun(discord, interaction.user, (interaction as GuildAutoCompleteInteraction).getGuild()) }
+                    .map { it.names }.flatten()
+                    .filter { it.contains(input, true) }
+            }
+            .optionalNullable(null)) {
             val input = args.first
             if (input.isNullOrBlank()) {
                 val event = this
-                val message = respond("Help Menu Loading ...", false)
+                val message = respond("Help Menu Loading ...")
                 channel.createMenu { buildHelpEmbed(event) }
                 message?.edit { content = "Help Menu:" }
             } else {

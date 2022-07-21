@@ -14,7 +14,7 @@ import me.jakejmattson.discordkt.commands.commands
 fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingService) = commands("ReactionRole") {
     slash("createReactionRole") {
         description = "Create a reaction role embed"
-        requiredPermission = Permissions.ADMINISTRATOR
+        requiredPermissions = Permissions.ADMINISTRATOR
         execute(MultipleArg(RoleArg, "Roles"), EveryArg("EmbedDescription")) {
             val (roles, descriptionText) = args
             val guildConfig = configuration[guild.id] ?: return@execute
@@ -28,7 +28,7 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
 
             reactionRole.messageId = respondMenu {
                 createReactionRoleMenu(discord, guild, reactionRole)
-            }?.id
+            }.id
 
             guildConfig.reactionRoles.add(reactionRole)
             configuration.save()

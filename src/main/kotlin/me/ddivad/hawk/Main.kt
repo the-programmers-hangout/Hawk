@@ -30,11 +30,10 @@ suspend fun main() {
         }
 
         configure {
-            allowMentionPrefix = true
+            mentionAsPrefix = true
             commandReaction = null
             theme = Color.MAGENTA
             entitySupplyStrategy = EntitySupplyStrategy.cacheWithRestFallback
-            permissions = Permissions
             intents = Intents(
                 Intent.Guilds,
                 Intent.GuildMembers
@@ -66,7 +65,7 @@ suspend fun main() {
             field {
                 name = "Build Info"
                 value = "```" +
-                        "Version:   2.0.0\n" +
+                        "Version:   2.1.0\n" +
                         "DiscordKt: ${versions.library}\n" +
                         "Kotlin:    $kotlinVersion" +
                         "```"

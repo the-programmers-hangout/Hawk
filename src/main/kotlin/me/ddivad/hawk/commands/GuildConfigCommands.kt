@@ -16,7 +16,7 @@ import java.util.*
 fun guildConfigCommands(configuration: Configuration) = commands("Configuration") {
     slash("setup") {
         description = "Setup a configuration for this guild"
-        requiredPermission = Permissions.ADMINISTRATOR
+        requiredPermissions = Permissions.ADMINISTRATOR
         execute {
             if (!configuration.hasGuildConfig(guild.id)) {
                 configuration.setup(guild)
@@ -31,7 +31,7 @@ fun guildConfigCommands(configuration: Configuration) = commands("Configuration"
 
     slash("setPrefix") {
         description = "Set the bot prefix."
-        requiredPermission = Permissions.ADMINISTRATOR
+        requiredPermissions = Permissions.ADMINISTRATOR
         execute(EveryArg) {
             if (!configuration.hasGuildConfig(guild.id)) {
                 configuration.setup(guild)
@@ -39,13 +39,13 @@ fun guildConfigCommands(configuration: Configuration) = commands("Configuration"
             val prefix = args.first
             configuration[guild.id]?.prefix = prefix
             configuration.save()
-            respond("Prefix set to: **$prefix**", false)
+            respondPublic("Prefix set to: **$prefix**")
         }
     }
 
     slash("setRole") {
         description = "Set the bot staff or admin role."
-        requiredPermission = Permissions.ADMINISTRATOR
+        requiredPermissions = Permissions.ADMINISTRATOR
         execute(ChoiceArg("RoleChoice", "Set the staff or admin role", "staff", "admin"), RoleArg("RoleName")) {
             if (!configuration.hasGuildConfig(guild.id)) {
                 configuration.setup(guild)
@@ -60,13 +60,13 @@ fun guildConfigCommands(configuration: Configuration) = commands("Configuration"
                 }
             }
             configuration.save()
-            respond("${choice.replaceFirstChar { it.titlecase(Locale.getDefault()) }} role set to: **${role.name}**", false)
+            respondPublic("${choice.replaceFirstChar { it.titlecase(Locale.getDefault()) }} role set to: **${role.name}**")
         }
     }
 
     slash("setChannel") {
         description = "Set the logging or alert channel"
-        requiredPermission = Permissions.ADMINISTRATOR
+        requiredPermissions = Permissions.ADMINISTRATOR
         execute(ChoiceArg("ChannelChoice", "Set the logging or alert channel", "logging", "alert"),
             ChannelArg<TextChannel>("Channel", "Channel that messages will be posted to")) {
             if (!configuration.hasGuildConfig(guild.id)) {
@@ -82,17 +82,17 @@ fun guildConfigCommands(configuration: Configuration) = commands("Configuration"
                 }
             }
             configuration.save()
-            respond("${choice.replaceFirstChar { it.titlecase(Locale.getDefault()) }} channel set to: **${channel.mention}**", false)
+            respondPublic("${choice.replaceFirstChar { it.titlecase(Locale.getDefault()) }} channel set to: **${channel.mention}**")
         }
     }
 
     slash("configuration") {
         description = "View the bot configuration"
-        requiredPermission = Permissions.STAFF
+        requiredPermissions = Permissions.STAFF
         execute {
             val guildConfiguration = configuration[guild.id] ?: return@execute
             val fullyConfigured = configuration.isFullyConfigured(guild)
-            respond(false) {
+            respondPublic {
                 color = discord.configuration.theme
                 title = "Configuration"
                 thumbnail {

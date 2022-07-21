@@ -1,13 +1,9 @@
 package me.ddivad.hawk.commands
 
-import dev.kord.core.behavior.edit
-import me.ddivad.hawk.arguments.LowerMemberArg
 import me.ddivad.hawk.dataclasses.Configuration
-import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.LoggingService
 import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
-import me.jakejmattson.discordkt.arguments.EveryArg
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.extensions.addField
 
@@ -49,7 +45,7 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                     }
                     guildConfig.disallowedNicknameSymbols.add(symbol.replace(" ", ""))
                     configuration.save()
-                    respond("Added **$symbol** to blacklist.", false)
+                    respondPublic("Added **$symbol** to blacklist.")
                 }
                 "remove" -> {
                     if (symbol == null) {
@@ -62,11 +58,11 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                     }
                     guildConfig.disallowedNicknameSymbols.remove(symbol.replace(" ", ""))
                     configuration.save()
-                    respond("Removed **$symbol** from blacklist.", false)
+                    respondPublic("Removed **$symbol** from blacklist.")
 
                 }
                 "view" -> {
-                    respond(false) {
+                    respondPublic {
                         color = discord.configuration.theme
                         addField("**Blocklisted Symbols**", guildConfig.disallowedNicknameSymbols.joinToString(" , ") )
                     }
