@@ -8,7 +8,10 @@ import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.StartupService
 import me.jakejmattson.discordkt.dsl.bot
+import mu.KotlinLogging
 import java.awt.Color
+
+val logger = KotlinLogging.logger {  }
 
 @KordPreview
 @PrivilegedIntent
@@ -43,6 +46,7 @@ suspend fun main() {
             } catch (ex: Exception) {
                 println(ex.message)
             }
+            logger.info { "Bot Ready" }
         }
     }
 }

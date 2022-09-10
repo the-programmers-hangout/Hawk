@@ -10,23 +10,29 @@ import kotlinx.coroutines.runBlocking
 import me.ddivad.hawk.dataclasses.Configuration
 import me.jakejmattson.discordkt.annotations.Service
 import me.jakejmattson.discordkt.extensions.idDescriptor
+import mu.KotlinLogging
 
 @Service
 class LoggingService(private val config: Configuration) {
+    private val logger = KotlinLogging.logger {  }
 
     fun reactionRoleAdded(guild: Guild, member: Member, role: Role) = withLog(guild) {
+        logger.info { buildGuildLogMessage(guild, "${role.name} (${role.id}) added to ${member.idDescriptor()}") }
         "**Info** :: Role **${role.name}** added to ${member.idDescriptor()}"
     }
 
     fun reactionRoleRemoved(guild: Guild, member: Member, role: Role) = withLog(guild) {
+        logger.info { buildGuildLogMessage(guild, "${role.name} (${role.id}) removed from ${member.idDescriptor()}") }
         "**Info** :: Role **${role.name}** removed from ${member.idDescriptor()}"
     }
 
     fun nicknameApplied(guild: Guild, member: Member, nickname: String) = withLog(guild) {
+        logger.info { buildGuildLogMessage(guild, "Nickname $nickname applied to ${member.idDescriptor()}") }
         "**Info** :: Nickname $nickname applied to ${member.idDescriptor()}"
     }
 
     fun blocklistedSymbolRemoved(guild: Guild, member: Member) = withAlert(guild) {
+        logger.info { buildGuildLogMessage(guild, "Blocklisted symbols detected and removed from ${member.idDescriptor()}") }
         "**Info** :: Blocklisted symbols detected and removed from ${member.idDescriptor()} (${member.displayName})"
     }
 
@@ -51,5 +57,6 @@ class LoggingService(private val config: Configuration) {
 
     private suspend fun alert(guild: Guild, alertChannelId: Snowflake, message: String) =
         guild.getChannelOf<TextChannel>(alertChannelId).createMessage(message)
-
 }
+
+fun buildGuildLogMessage(guild: Guild, message: String) = "${guild.name} (${guild.id}): $message"
