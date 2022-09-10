@@ -46,7 +46,10 @@ class LoggingService(private val config: Configuration) {
 
     private fun getLogConfig(guild: Guild) = config[guild.id]!!.loggingConfiguration.logChannel!!
     private fun getAlertConfig(guild: Guild) = config[guild.id]!!.loggingConfiguration.alertChannel!!
-    private suspend fun log(guild: Guild, logChannelId: Snowflake, message: String) = guild.getChannelOf<TextChannel>(logChannelId).createMessage(message)
-    private suspend fun alert(guild: Guild, alertChannelId: Snowflake, message: String) = guild.getChannelOf<TextChannel>(alertChannelId).createMessage(message)
+    private suspend fun log(guild: Guild, logChannelId: Snowflake, message: String) =
+        guild.getChannelOf<TextChannel>(logChannelId).createMessage(message)
+
+    private suspend fun alert(guild: Guild, alertChannelId: Snowflake, message: String) =
+        guild.getChannelOf<TextChannel>(alertChannelId).createMessage(message)
 
 }

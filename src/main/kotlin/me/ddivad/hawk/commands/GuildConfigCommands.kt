@@ -6,8 +6,6 @@ import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.embeds.createConfigurationEmbed
 import me.jakejmattson.discordkt.arguments.ChannelArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
-import me.jakejmattson.discordkt.arguments.RoleArg
-import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.commands.subcommand
 import java.util.*
 
@@ -17,8 +15,9 @@ fun guildConfigCommands(configuration: Configuration) = subcommand("Configuratio
         execute {
             if (!configuration.hasGuildConfig(guild.id)) {
                 configuration.setup(guild)
-                respond("Created new configuration for guild **${guild.name}**." +
-                        "Please run `/setRole` to set the staff and admin roles to finalize configuration"
+                respond(
+                    "Created new configuration for guild **${guild.name}**." +
+                            "Please run `/setRole` to set the staff and admin roles to finalize configuration"
                 )
                 return@execute
             }
@@ -26,15 +25,16 @@ fun guildConfigCommands(configuration: Configuration) = subcommand("Configuratio
         }
     }
 
-
     sub("setChannel", "Set the logging or alert channel") {
-        execute(ChoiceArg("ChannelChoice", "Set the logging or alert channel", "logging", "alert"),
-            ChannelArg<TextChannel>("Channel", "Channel that messages will be posted to")) {
+        execute(
+            ChoiceArg("ChannelChoice", "Set the logging or alert channel", "logging", "alert"),
+            ChannelArg<TextChannel>("Channel", "Channel that messages will be posted to")
+        ) {
             if (!configuration.hasGuildConfig(guild.id)) {
                 configuration.setup(guild)
             }
             val (choice, channel) = args
-            when(choice) {
+            when (choice) {
                 "logging" -> {
                     configuration[guild.id]?.loggingConfiguration?.logChannel = channel.id
                 }
@@ -47,7 +47,7 @@ fun guildConfigCommands(configuration: Configuration) = subcommand("Configuratio
         }
     }
 
-    sub("view", "View the bot configuration",Permissions.STAFF) {
+    sub("view", "View the bot configuration", Permissions.STAFF) {
         execute {
             respondPublic {
                 createConfigurationEmbed(configuration, guild, discord)

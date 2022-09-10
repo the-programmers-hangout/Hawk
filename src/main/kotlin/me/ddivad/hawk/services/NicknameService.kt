@@ -19,7 +19,8 @@ class NicknameService(private val configuration: Configuration, private val logg
             return
         }
 
-        val hasPartyNicknameApplied = member.displayName.endsWith(partyConfiguration.symbol) || member.displayName.endsWith(partyConfiguration.symbolStrip)
+        val hasPartyNicknameApplied =
+            member.displayName.endsWith(partyConfiguration.symbol) || member.displayName.endsWith(partyConfiguration.symbolStrip)
         if (!hasPartyNicknameApplied && partyConfiguration.enabled) {
             val nickname = addNickSymbol(member.displayName, partyConfiguration.symbol, partyConfiguration.symbolStrip)
             changeMemberNickname(guild, member, nickname)
@@ -46,7 +47,7 @@ class NicknameService(private val configuration: Configuration, private val logg
         val nickWithPrefix = "$newName $symbol"
 
         val sizedNick = if (nickWithPrefix.length > 32) {
-                nickWithPrefix.substring(0, 31 - symbol.length) + symbol
+            nickWithPrefix.substring(0, 31 - symbol.length) + symbol
         } else {
             nickWithPrefix
         }

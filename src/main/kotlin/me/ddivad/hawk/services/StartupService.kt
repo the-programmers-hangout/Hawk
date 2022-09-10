@@ -9,7 +9,11 @@ import me.jakejmattson.discordkt.annotations.Service
 import me.jakejmattson.discordkt.extensions.createMenu
 
 @Service
-class StartupService(private val configuration: Configuration, private val discord: Discord, private val loggingService: LoggingService) {
+class StartupService(
+    private val configuration: Configuration,
+    private val discord: Discord,
+    private val loggingService: LoggingService
+) {
     suspend fun refreshReactionRoleInteractions() {
         configuration.guildConfigurations.forEach { config ->
             val guild = config.value.let { discord.kord.getGuild(config.key) } ?: return@forEach

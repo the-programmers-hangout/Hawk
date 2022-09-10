@@ -10,7 +10,8 @@ fun messageDeleteListener(configuration: Configuration) = listeners {
     on<MessageDeleteEvent> {
         val guild = guild ?: return@on
         val guildConfiguration = configuration[guild.id] ?: return@on
-        val reactionRole = guildConfiguration.reactionRoles.find { it.channel == channelId && it.messageId == messageId } ?: return@on
+        val reactionRole =
+            guildConfiguration.reactionRoles.find { it.channel == channelId && it.messageId == messageId } ?: return@on
 
         configuration.edit {
             guildConfiguration.reactionRoles.remove(reactionRole)

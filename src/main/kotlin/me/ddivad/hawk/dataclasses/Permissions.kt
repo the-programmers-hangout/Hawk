@@ -9,5 +9,5 @@ object Permissions {
     val GUILD_OWNER = Permissions(Permission.ManageGuild)
     val ADMINISTRATOR = Permissions(Permission.ManageGuild)
     val STAFF = Permissions(Permission.ManageMessages)
-    val EVERYONE = Permissions(Permission.SendMessages)
+    val EVERYONE = Permissions(Permission.UseApplicationCommands)
 }

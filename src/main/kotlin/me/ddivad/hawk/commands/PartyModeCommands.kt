@@ -50,10 +50,10 @@ fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
             ChoiceArg("PartyChannelOption", "Party channel options", "enable", "disable", "add", "remove", "view"),
             ChannelArg<TextChannel>("PartyChannel", "A channel where party mode will apply").optionalNullable(null)
         ) {
-            val(choice, channel) = args
+            val (choice, channel) = args
             val guildConfiguration = configuration[guild.id] ?: return@execute
 
-            when(choice) {
+            when (choice) {
                 "enable" -> {
                     guildConfiguration.partyModeConfiguration.channelFilterEnabled = true
                     configuration.save()
