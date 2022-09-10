@@ -1,18 +1,17 @@
 package me.ddivad.hawk
 
 import dev.kord.common.annotation.KordPreview
-import dev.kord.core.supplier.EntitySupplyStrategy
 import dev.kord.gateway.Intent
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.Permissions
-import me.ddivad.hawk.services.BotStatsService
 import me.ddivad.hawk.services.StartupService
 import me.jakejmattson.discordkt.dsl.bot
-import me.jakejmattson.discordkt.extensions.addInlineField
-import me.jakejmattson.discordkt.extensions.pfpUrl
+import mu.KotlinLogging
 import java.awt.Color
+
+val logger = KotlinLogging.logger {  }
 
 @KordPreview
 @PrivilegedIntent
@@ -30,58 +29,14 @@ suspend fun main() {
         }
 
         configure {
-            allowMentionPrefix = true
-            commandReaction = null
+            defaultPermissions = Permissions.STAFF
             theme = Color.MAGENTA
-            entitySupplyStrategy = EntitySupplyStrategy.cacheWithRestFallback
-            permissions = Permissions
             intents = Intents(
                 Intent.Guilds,
                 Intent.GuildMembers
             )
         }
 
-        mentionEmbed {
-            val botStats = it.discord.getInjectionObjects(BotStatsService::class)
-            val channel = it.channel
-            val self = channel.kord.getSelf()
-
-            color = it.discord.configuration.theme
-
-            thumbnail {
-                url = self.pfpUrl
-            }
-
-            field {
-                name = self.tag
-                value = "A bot to add and maintain a symbol as a prefix or suffix in staff names."
-            }
-
-            addInlineField("Prefix", it.prefix())
-            addInlineField("Contributors", "ddivad#0001")
-
-            val kotlinVersion = KotlinVersion.CURRENT
-            val versions = it.discord.versions
-
-            field {
-                name = "Build Info"
-                value = "```" +
-                        "Version:   2.0.0\n" +
-                        "DiscordKt: ${versions.library}\n" +
-                        "Kotlin:    $kotlinVersion" +
-                        "```"
-            }
-
-            field {
-                name = "Uptime"
-                value = botStats.uptime
-            }
-
-            field {
-                name = "Ping"
-                value = botStats.ping
-            }
-        }
         onStart {
             val startupService = this.getInjectionObjects(
                 StartupService::class
@@ -91,6 +46,7 @@ suspend fun main() {
             } catch (ex: Exception) {
                 println(ex.message)
             }
+            logger.info { "Bot Ready" }
         }
     }
 }

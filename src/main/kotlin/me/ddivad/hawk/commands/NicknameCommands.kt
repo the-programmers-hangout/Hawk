@@ -3,7 +3,6 @@ package me.ddivad.hawk.commands
 import dev.kord.core.behavior.edit
 import me.ddivad.hawk.arguments.LowerMemberArg
 import me.ddivad.hawk.dataclasses.Configuration
-import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.LoggingService
 import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
@@ -14,23 +13,20 @@ import me.jakejmattson.discordkt.extensions.addField
 @Suppress("unused")
 fun nicknameCommands(configuration: Configuration, loggingService: LoggingService
 ) = commands("Nickname") {
-//    slash("nick") {
-//        description = "Set a member's nickname"
-//        requiredPermission = Permissions.STAFF
-//        execute(LowerMemberArg, EveryArg("Nickname")) {
-//            val (member, nickname) = args
-//            if (nickname.length > 32) {
-//                respond("Nickname needs to be < 32 characters")
-//                return@execute
-//            }
-//            member.edit { this.nickname = nickname }
-//            respond("Nickname set to **$nickname**")
-//            loggingService.nicknameApplied(guild, member, nickname)
-//        }
-//    }
+    slash("nick", "Set a member's nickname") {
+        execute(LowerMemberArg, EveryArg("Nickname")) {
+            val (member, nickname) = args
+            if (nickname.length > 32) {
+                respond("Nickname needs to be < 32 characters")
+                return@execute
+            }
+            member.edit { this.nickname = nickname }
+            respond("Nickname set to **$nickname**")
+            loggingService.nicknameApplied(guild, member, nickname)
+        }
+    }
 
-    slash("blocklist") {
-        description = "Add a symbol to the symbol blocklist."
+    slash("blocklist", "Add a symbol to the symbol blocklist.") {
         execute(
             ChoiceArg("BloclklistOption", "Add, remove or list options on the blocklist", "add", "remove", "view"),
             AnyArg("symbol", "A word or emoji that you want to disallow").optionalNullable(null)
@@ -49,7 +45,7 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                     }
                     guildConfig.disallowedNicknameSymbols.add(symbol.replace(" ", ""))
                     configuration.save()
-                    respond("Added **$symbol** to blacklist.", false)
+                    respondPublic("Added **$symbol** to blacklist.")
                 }
                 "remove" -> {
                     if (symbol == null) {
@@ -62,11 +58,11 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                     }
                     guildConfig.disallowedNicknameSymbols.remove(symbol.replace(" ", ""))
                     configuration.save()
-                    respond("Removed **$symbol** from blacklist.", false)
+                    respondPublic("Removed **$symbol** from blacklist.")
 
                 }
                 "view" -> {
-                    respond(false) {
+                    respondPublic {
                         color = discord.configuration.theme
                         addField("**Blocklisted Symbols**", guildConfig.disallowedNicknameSymbols.joinToString(" , ") )
                     }
