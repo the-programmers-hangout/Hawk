@@ -6,17 +6,19 @@ import me.ddivad.hawk.dataclasses.ReactionRole
 import me.ddivad.hawk.embeds.createReactionRoleMenu
 import me.ddivad.hawk.services.LoggingService
 import me.jakejmattson.discordkt.arguments.EveryArg
-import me.jakejmattson.discordkt.arguments.MultipleArg
-import me.jakejmattson.discordkt.arguments.RoleArg
 import me.jakejmattson.discordkt.commands.commands
+import me.jakejmattson.discordkt.dsl.edit
+import me.jakejmattson.discordkt.extensions.toSnowflake
 
 @Suppress("unused")
 fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingService) = commands("ReactionRole") {
-    slash("createReactionRole") {
-        description = "Create a reaction role embed"
-        requiredPermissions = Permissions.ADMINISTRATOR
-        execute(MultipleArg(RoleArg, "Roles"), EveryArg("EmbedDescription")) {
-            val (roles, descriptionText) = args
+    slash("createReactionRole", "Create a reaction role embed", Permissions.ADMINISTRATOR) {
+        execute(
+            EveryArg("Roles", "Role IDs to be added. If using multiple roles, separate IDs with a space"),
+            EveryArg("EmbedDescription", "Text to be added to reaction role embed")
+        ) {
+            val (roleIds, descriptionText) = args
+            val roles = roleIds.split(" ").map { guild.getRole(it.toSnowflake()) }
             val guildConfig = configuration[guild.id] ?: return@execute
             val reactionRole = ReactionRole(
                 guildConfig.reactionRoles.size + 1,
@@ -25,13 +27,14 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
                 null,
                 channel.id
             )
-
             reactionRole.messageId = respondMenu {
                 createReactionRoleMenu(discord, guild, reactionRole)
             }.id
-
-            guildConfig.reactionRoles.add(reactionRole)
-            configuration.save()
+            configuration.edit {
+                guildConfig.reactionRoles.add(reactionRole)
+            }
+            respond("Reaction role created")
         }
     }
 }
+

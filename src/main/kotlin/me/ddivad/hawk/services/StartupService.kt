@@ -22,7 +22,7 @@ class StartupService(private val configuration: Configuration, private val disco
                 message.delete()
                 it.messageId = channel.createMenu {
                     createReactionRoleMenu(discord, guild, it)
-                }!!.id
+                }.id
             }
             configuration.save()
         }

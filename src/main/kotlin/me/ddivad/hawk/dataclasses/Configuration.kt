@@ -2,15 +2,15 @@ package me.ddivad.hawk.dataclasses
 
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.entity.Guild
-import dev.kord.core.entity.Role
 import kotlinx.serialization.Serializable
 import me.jakejmattson.discordkt.dsl.Data
+import me.jakejmattson.discordkt.dsl.edit
 
 @Serializable
 data class Configuration(
-        val ownerId: Snowflake? = null,
-        var prefix: String = "++",
-        val guildConfigurations: MutableMap<Snowflake, GuildConfiguration> = mutableMapOf()
+    val ownerId: Snowflake? = null,
+    var prefix: String = "hawk!",
+    val guildConfigurations: MutableMap<Snowflake, GuildConfiguration> = mutableMapOf()
 ) : Data() {
     operator fun get(id: Snowflake) = guildConfigurations[id]
     fun hasGuildConfig(guildId: Snowflake) = guildConfigurations.containsKey(guildId)
@@ -19,18 +19,17 @@ data class Configuration(
         if (guildConfigurations[guild.id] != null) return
 
         val newConfiguration = GuildConfiguration(
-                guild.id,
+            guild.id,
         )
-        guildConfigurations[guild.id] = newConfiguration
-        save()
+        edit {
+            guildConfigurations[guild.id] = newConfiguration
+        }
     }
 
     fun isFullyConfigured(guild: Guild): Boolean {
         val guildConfiguration = guildConfigurations[guild.id] ?: return false
 
-        if (guildConfiguration.staffRoleId == null ||
-            guildConfiguration.adminRoleId == null ||
-            guildConfiguration.loggingConfiguration.logChannel == null ||
+        if (guildConfiguration.loggingConfiguration.logChannel == null ||
             guildConfiguration.loggingConfiguration.alertChannel == null
         ) {
             return false
@@ -43,8 +42,6 @@ data class Configuration(
 data class GuildConfiguration(
     val id: Snowflake,
     var prefix: String = "hawk!",
-    var staffRoleId: Snowflake? = null,
-    var adminRoleId: Snowflake? = null,
     var disallowedNicknameSymbols: MutableList<String> = mutableListOf(),
     var partyModeConfiguration: PartyModeConfiguration = PartyModeConfiguration(),
     var loggingConfiguration: LoggingConfiguration = LoggingConfiguration(),

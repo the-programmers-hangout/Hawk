@@ -1,18 +1,19 @@
 package me.ddivad.hawk.commands
 
 import me.ddivad.hawk.dataclasses.Configuration
+import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.LoggingService
 import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
+import me.jakejmattson.discordkt.arguments.EveryArg
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.extensions.addField
 
 @Suppress("unused")
 fun nicknameCommands(configuration: Configuration, loggingService: LoggingService
 ) = commands("Nickname") {
-//    slash("nick") {
+//    slash("nick", "Set a member's nickname", Permissions.STAFF) {
 //        description = "Set a member's nickname"
-//        requiredPermission = Permissions.STAFF
 //        execute(LowerMemberArg, EveryArg("Nickname")) {
 //            val (member, nickname) = args
 //            if (nickname.length > 32) {
@@ -25,8 +26,7 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
 //        }
 //    }
 
-    slash("blocklist") {
-        description = "Add a symbol to the symbol blocklist."
+    slash("blocklist", "Add a symbol to the symbol blocklist.") {
         execute(
             ChoiceArg("BloclklistOption", "Add, remove or list options on the blocklist", "add", "remove", "view"),
             AnyArg("symbol", "A word or emoji that you want to disallow").optionalNullable(null)

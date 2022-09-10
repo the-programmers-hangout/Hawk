@@ -2,25 +2,21 @@ package me.ddivad.hawk.commands
 
 import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
-import me.ddivad.hawk.dataclasses.Permissions
 import me.jakejmattson.discordkt.arguments.ChannelArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
 import me.jakejmattson.discordkt.arguments.EveryArg
-import me.jakejmattson.discordkt.commands.commands
+import me.jakejmattson.discordkt.commands.subcommand
 
 @Suppress("unused")
-fun partyModeCommands(configuration: Configuration) = commands("Party") {
-    slash("getPartySymbol") {
-        description = "View the current party mode symbol"
-        requiredPermissions = Permissions.STAFF
+fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
+    sub("getPartySymbol", "View the current party mode symbol") {
         execute {
             val guildConfiguration = configuration[guild.id] ?: return@execute
             respondPublic("Current Symbol: ${guildConfiguration.partyModeConfiguration.symbol}")
         }
     }
 
-    slash("toggleParty") {
-        description = "Toggles party mode"
+    sub("toggleParty", "Toggles party mode") {
         execute {
             val guildConfiguration = configuration[guild.id] ?: return@execute
 
@@ -33,8 +29,7 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
         }
     }
 
-    slash("setPartySymbol") {
-        description = "Set new party mode symbol"
+    sub("setPartySymbol", "Set new party mode symbol") {
         execute(EveryArg("Suffix")) {
             val symbol = args.first.replace("\uD83D\uDD28", "")
             val guildConfiguration = configuration[guild.id] ?: return@execute
@@ -50,9 +45,7 @@ fun partyModeCommands(configuration: Configuration) = commands("Party") {
         }
     }
 
-    slash("partyChannelFilter") {
-        description = "Add, remove or view channels used in party mode"
-        requiredPermissions = Permissions.STAFF
+    sub("partyChannelFilter", "Add, remove or view channels used in party mode") {
         execute(
             ChoiceArg("PartyChannelOption", "Party channel options", "enable", "disable", "add", "remove", "view"),
             ChannelArg<TextChannel>("PartyChannel", "A channel where party mode will apply").optionalNullable(null)
