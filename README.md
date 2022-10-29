@@ -9,19 +9,15 @@
 <img src="https://img.shields.io/docker/cloud/build/theprogrammershangout/judgebot.svg?label=Docker&logo=docker" alt="Docker">
 </a>
 
-# DiscordKt Starter
+# Hawk
 
-> A template repo to get up and running with DiscordKt.
+> A bot to to help manage nicknames and reaction roles in a Discord server.
 
-# Template Structure
-This repo gives you a fully working, and extentable starter bot that contains the following:
-- Multi-Guild configuration.
-- A prebuilt `setup` command that goes through a conversation to create a guild configuration.
-- Prebuilt commands to change those configuration vales, and show how to add more if needed.
-- Main.kt with mention embed, command permissions and basic configration already setup.  
-- A Permissions Service, to allow commands or events to be restricted to roles. Admin or Staff roles can be setup using the `setup` command.
-- Complete Docker configuration to build the bot.
-- Docker-Compose setup to allow the bot to be run easily.
+# Features
+- Add words or symbols to a blocklist to stop users being able to put them in their nickname.
+- Manage reaction roles to allow members to add / remove selected roles via buttons.
+- Run "Party Mode" where anyone that types a message in a selected channel / channels will get the chosen symbol appended to their nickname.
+
 
 # Setup
 This bot can be setup and run locally using Docker and Docker-Compose. To start it locally, do the following:
