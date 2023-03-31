@@ -22,10 +22,10 @@
 | toggleParty        |                                    | Toggles party mode                              |
 
 ## Nickname
-| Commands  | Arguments                  | Description                           |
-|-----------|----------------------------|---------------------------------------|
-| blocklist | BloclklistOption, [symbol] | Add a symbol to the symbol blocklist. |
-| nick      | LowerMemberArg, Nickname   | Set a member's nickname               |
+| Commands  | Arguments                         | Description                           |
+|-----------|-----------------------------------|---------------------------------------|
+| blocklist | BloclklistOption, [symbol]        | Add a symbol to the symbol blocklist. |
+| nick      | LowerMemberArg, Theme, [Nickname] | Set a member's nickname               |
 
 ## ReactionRole
 | Commands           | Arguments               | Description                  |
