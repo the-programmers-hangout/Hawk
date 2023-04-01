@@ -3,7 +3,7 @@ package me.ddivad.hawk.services.nickname.themes
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.Member
 import me.ddivad.hawk.dataclasses.FurryNames
-import me.ddivad.hawk.services.NicknameService
+import me.ddivad.hawk.services.nickname.NicknameService
 
 class FurryTheme(private val nicknameService: NicknameService, private val names: FurryNames): NicknameTheme {
     override fun hasNicknameApplied(member: Member) = names.names.containsAll(member.displayName.split(" "))

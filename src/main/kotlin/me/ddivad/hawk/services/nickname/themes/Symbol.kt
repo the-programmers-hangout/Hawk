@@ -3,7 +3,7 @@ package me.ddivad.hawk.services.nickname.themes
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.Member
 import me.ddivad.hawk.dataclasses.Configuration
-import me.ddivad.hawk.services.NicknameService
+import me.ddivad.hawk.services.nickname.NicknameService
 
 class SymbolTheme(private val nicknameService: NicknameService, private val configuration: Configuration): NicknameTheme {
     private fun getPartyConfiguration(member: Member) = configuration[member.guildId]?.partyModeConfiguration

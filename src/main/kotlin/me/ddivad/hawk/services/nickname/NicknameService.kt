@@ -1,4 +1,4 @@
-package me.ddivad.hawk.services
+package me.ddivad.hawk.services.nickname
 
 import dev.kord.core.behavior.edit
 import dev.kord.core.entity.Guild
@@ -7,6 +7,9 @@ import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.FurryNames
 import me.ddivad.hawk.dataclasses.PartyModeThemes
+import me.ddivad.hawk.services.LoggingService
+import me.ddivad.hawk.services.nickname.themes.FurryTheme
+import me.ddivad.hawk.services.nickname.themes.SymbolTheme
 import me.jakejmattson.discordkt.annotations.Service
 
 @Service
@@ -20,9 +23,9 @@ class NicknameService(private val configuration: Configuration, private val logg
             return
         }
 
-        val theme = when (partyConfiguration.mode) {
-            PartyModeThemes.SYMBOL ->  SymbolNicknameTheme(this, configuration)
-            PartyModeThemes.FURRY -> FurryNicknameTheme(this, furryNames)
+        val theme = when (partyConfiguration.theme) {
+            PartyModeThemes.SYMBOL ->  SymbolTheme(this, configuration)
+            PartyModeThemes.FURRY -> FurryTheme(this, furryNames)
         }
         
         when(partyConfiguration.enabled) {
@@ -76,52 +79,5 @@ class NicknameService(private val configuration: Configuration, private val logg
     suspend fun changeMemberNickname(guild: Guild, member: Member, nickname: String): Member {
         loggingService.nicknameApplied(guild, member, nickname)
         return member.edit { this.nickname = nickname }
-    }
-}
-
-interface PartyModeTheme {
-    fun hasNicknameApplied(member: Member): Boolean
-    suspend fun setNickname(guild: Guild, member: Member)
-    suspend fun cleanup(guild: Guild, member: Member)
-}
-
-class FurryNicknameTheme(private val nicknameService: NicknameService, private val furryNames: FurryNames): PartyModeTheme {
-    override fun hasNicknameApplied(member: Member) = furryNames.names.containsAll(member.displayName.split(" "))
-
-    override suspend fun setNickname(guild: Guild, member: Member) {
-        if (!hasNicknameApplied(member)) {
-            val nickname = furryNames.getRandomName()
-            nicknameService.changeMemberNickname(guild, member, nickname)
-        }
-    }
-
-    override suspend fun cleanup(guild: Guild, member: Member) {
-        if (hasNicknameApplied(member)) {
-            nicknameService.changeMemberNickname(guild, member, member.username)
-        }
-    }
-}
-
-class SymbolNicknameTheme(private val nicknameService: NicknameService, private val configuration: Configuration): PartyModeTheme {
-    private fun getPartyConfiguration(member: Member) = configuration[member.guildId]?.partyModeConfiguration
-    override fun hasNicknameApplied(member: Member): Boolean {
-        val partyConfiguration =  getPartyConfiguration(member) ?: return false
-        return member.displayName.endsWith(partyConfiguration.symbol) || member.displayName.endsWith(partyConfiguration.symbolStrip)
-    }
-
-    override suspend fun setNickname(guild: Guild, member: Member) {
-        val partyConfiguration = getPartyConfiguration(member) ?: return
-        if (!hasNicknameApplied(member)) {
-            val nickname = nicknameService.addNickSymbol(member.displayName, partyConfiguration.symbol, partyConfiguration.symbolStrip)
-            nicknameService.changeMemberNickname(guild, member, nickname)
-        }
-    }
-
-    override suspend fun cleanup(guild: Guild, member: Member) {
-        val partyConfiguration =  getPartyConfiguration(member) ?: return
-        if (hasNicknameApplied(member)) {
-            val nickname = nicknameService.removeNickSymbol(member.displayName, mutableListOf(partyConfiguration.symbolStrip))
-            nicknameService.changeMemberNickname(guild, member, nickname)
-        }
     }
 }
