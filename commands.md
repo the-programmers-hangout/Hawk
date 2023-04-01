@@ -19,7 +19,7 @@
 | getPartySymbol     |                                    | View the current party mode symbol              |
 | partyChannelFilter | PartyChannelOption, [PartyChannel] | Add, remove or view channels used in party mode |
 | setPartySymbol     | Suffix                             | Set new party mode symbol                       |
-| toggleParty        |                                    | Toggles party mode                              |
+| toggleParty        | Mode                               | Toggles party mode                              |
 
 ## Nickname
 | Commands  | Arguments                         | Description                           |

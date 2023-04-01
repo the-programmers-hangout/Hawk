@@ -11,6 +11,14 @@ import me.jakejmattson.discordkt.annotations.Service
 class NicknameService(private val configuration: Configuration, private val loggingService: LoggingService) {
     suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
+        if (member.isBot) {
+            return
+        }
+        if (partyConfiguration.mode == "Furry" && (!furryNames.contains(member.displayName) || !furryNames.contains(member.nickname))) {
+            val nickname = furryNames.random()
+            changeMemberNickname(guild, member, nickname)
+            return
+        }
 
         if (partyConfiguration.symbol.isNullOrBlank()) {
             return

@@ -54,7 +54,8 @@ data class PartyModeConfiguration(
     var symbol: String = "",
     var symbolStrip: String = "",
     var channels: MutableList<Snowflake> = mutableListOf(),
-    var channelFilterEnabled: Boolean = false
+    var channelFilterEnabled: Boolean = false,
+    var mode: String = ""
 )
 
 @Serializable
