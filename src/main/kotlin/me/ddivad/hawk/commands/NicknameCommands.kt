@@ -22,13 +22,19 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                 return@execute
             }
 
-            val newNickname = when (theme) {
-                "Manual" -> nickname
-                "Furry" -> nicknameService.furryNames.random()
-                else -> null
+            var newNickname = member.displayName
+            if (theme == "Furry") {
+                var firstPart = "${nicknameService.furryNames.random()}"
+                var secondPart = "${nicknameService.furryNames.random()}"
+                while (firstPart == secondPart) {
+                    secondPart = "${nicknameService.furryNames.random()}"
+                }
+                newNickname = "$firstPart $secondPart"
+            } else if (theme == "Manual" && nickname != null) {
+                newNickname = nickname
             }
 
-            newNickname?.let {
+            newNickname.let {
                 member.edit { this.nickname = newNickname }
                 loggingService.nicknameApplied(guild, member, newNickname)
             }
