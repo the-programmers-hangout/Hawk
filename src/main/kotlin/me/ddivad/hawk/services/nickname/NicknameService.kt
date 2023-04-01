@@ -13,7 +13,11 @@ import me.ddivad.hawk.services.nickname.themes.SymbolTheme
 import me.jakejmattson.discordkt.annotations.Service
 
 @Service
-class NicknameService(private val configuration: Configuration, private val loggingService: LoggingService, private val furryNames: FurryNames) {
+class NicknameService(
+    private val configuration: Configuration,
+    private val loggingService: LoggingService,
+    private val furryNames: FurryNames
+) {
     suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
         if (member.isBot) {
@@ -24,11 +28,11 @@ class NicknameService(private val configuration: Configuration, private val logg
         }
 
         val theme = when (partyConfiguration.theme) {
-            PartyModeThemes.SYMBOL ->  SymbolTheme(this, configuration)
+            PartyModeThemes.SYMBOL -> SymbolTheme(this, configuration)
             PartyModeThemes.FURRY -> FurryTheme(this, furryNames)
         }
-        
-        when(partyConfiguration.enabled) {
+
+        when (partyConfiguration.enabled) {
             true -> theme.setNickname(guild, member)
             false -> theme.cleanup(guild, member)
         }
