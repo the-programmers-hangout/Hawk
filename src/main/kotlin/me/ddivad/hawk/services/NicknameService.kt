@@ -32,18 +32,20 @@ class NicknameService(private val configuration: Configuration, private val logg
             }
         }
 
-        if (partyConfiguration.mode == "Furry" && !furryNames.containsAll(member.displayName.split(" "))) {
-            if (!partyConfiguration.enabled) {
+        if (partyConfiguration.mode == "Furry") {
+           if (partyConfiguration.enabled && !furryNames.containsAll(member.displayName.split(" "))) {
+                val firstPart = furryNames.random()
+                var secondPart = furryNames.random()
+                while (firstPart == secondPart) {
+                    secondPart = furryNames.random()
+                }
+                val nickname = "$firstPart $secondPart"
+                changeMemberNickname(guild, member, nickname)
                 return
-            }
-            var firstPart = "${furryNames.random()}"
-            var secondPart = "${furryNames.random()}"
-            while (firstPart == secondPart) {
-                secondPart = "${furryNames.random()}"
-            }
-            val nickname = "$firstPart $secondPart"
-            changeMemberNickname(guild, member, nickname)
-            return
+            } else if (!partyConfiguration.enabled && furryNames.containsAll(member.displayName.split(" "))) {
+               changeMemberNickname(guild, member, member.username)
+               return
+           }
         }
     }
 

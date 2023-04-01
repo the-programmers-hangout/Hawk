@@ -24,10 +24,10 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
 
             var newNickname = member.displayName
             if (theme == "Furry") {
-                var firstPart = "${nicknameService.furryNames.random()}"
-                var secondPart = "${nicknameService.furryNames.random()}"
+                var firstPart = nicknameService.furryNames.random()
+                var secondPart = nicknameService.furryNames.random()
                 while (firstPart == secondPart) {
-                    secondPart = "${nicknameService.furryNames.random()}"
+                    secondPart = nicknameService.furryNames.random()
                 }
                 newNickname = "$firstPart $secondPart"
             } else if (theme == "Manual" && nickname != null) {
