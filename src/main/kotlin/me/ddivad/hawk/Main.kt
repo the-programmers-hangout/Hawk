@@ -5,6 +5,7 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.hawk.dataclasses.Configuration
+import me.ddivad.hawk.dataclasses.FurryNames
 import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.services.StartupService
 import me.jakejmattson.discordkt.dsl.bot
@@ -23,6 +24,7 @@ suspend fun main() {
 
     bot(token) {
         val configuration = data("data/config.json") { Configuration() }
+        val furryNames = data("src/main/resources/FurryNames.json") { FurryNames() }
 
         prefix {
             guild?.let { configuration[it.id]?.prefix } ?: prefix

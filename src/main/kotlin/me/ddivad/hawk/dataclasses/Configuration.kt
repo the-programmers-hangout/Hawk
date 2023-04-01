@@ -55,8 +55,13 @@ data class PartyModeConfiguration(
     var symbolStrip: String = "",
     var channels: MutableList<Snowflake> = mutableListOf(),
     var channelFilterEnabled: Boolean = false,
-    var mode: String = ""
+    var theme: PartyModeThemes = PartyModeThemes.SYMBOL
 )
+
+@Serializable
+enum class PartyModeThemes {
+    SYMBOL, FURRY
+}
 
 @Serializable
 data class LoggingConfiguration(

@@ -3,8 +3,9 @@ package me.ddivad.hawk.commands
 import dev.kord.core.behavior.edit
 import me.ddivad.hawk.arguments.LowerMemberArg
 import me.ddivad.hawk.dataclasses.Configuration
+import me.ddivad.hawk.dataclasses.FurryNames
 import me.ddivad.hawk.services.LoggingService
-import me.ddivad.hawk.services.NicknameService
+import me.ddivad.hawk.services.nickname.NicknameService
 import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
 import me.jakejmattson.discordkt.arguments.EveryArg
@@ -12,7 +13,7 @@ import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.extensions.addField
 
 @Suppress("unused")
-fun nicknameCommands(configuration: Configuration, loggingService: LoggingService, nicknameService: NicknameService
+fun nicknameCommands(configuration: Configuration, loggingService: LoggingService, nicknameService: NicknameService, furryNames: FurryNames
 ) = commands("Nickname") {
     slash("nick", "Set a member's nickname") {
         execute(LowerMemberArg, ChoiceArg("Theme", "Choose a theme for nicknames", "Manual", "Furry"), EveryArg("Nickname", "Optional Nickname for use with Manual option").optionalNullable(null) ) {
@@ -22,22 +23,14 @@ fun nicknameCommands(configuration: Configuration, loggingService: LoggingServic
                 return@execute
             }
 
-            var newNickname = member.displayName
-            if (theme == "Furry") {
-                var firstPart = nicknameService.furryNames.random()
-                var secondPart = nicknameService.furryNames.random()
-                while (firstPart == secondPart) {
-                    secondPart = nicknameService.furryNames.random()
-                }
-                newNickname = "$firstPart $secondPart"
-            } else if (theme == "Manual" && nickname != null) {
-                newNickname = nickname
+            val newNickname = when (theme) {
+                "Furry" -> furryNames.getRandomName()
+                "Manual" -> nickname ?: member.displayName
+                else -> member.displayName
             }
 
-            newNickname.let {
-                member.edit { this.nickname = newNickname }
-                loggingService.nicknameApplied(guild, member, newNickname)
-            }
+            member.edit { this.nickname = newNickname }
+            loggingService.nicknameApplied(guild, member, newNickname)
             respond("Nickname set to **$newNickname**")
         }
     }

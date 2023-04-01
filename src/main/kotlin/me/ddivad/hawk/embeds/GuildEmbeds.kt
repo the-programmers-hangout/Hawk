@@ -28,7 +28,7 @@ suspend fun EmbedBuilder.createConfigurationEmbed(configuration: Configuration, 
     field {
         name = "**Party**"
         value = "Enabled: ${guildConfiguration.partyModeConfiguration.enabled}\n" +
-                "Mode: ${guildConfiguration.partyModeConfiguration.mode}\n" +
+                "Mode: ${guildConfiguration.partyModeConfiguration.theme.name}\n" +
                 "Symbol: ${guildConfiguration.partyModeConfiguration.symbol}\n" +
                 "Channel Filter Enabled: ${guildConfiguration.partyModeConfiguration.channelFilterEnabled}\n" +
                 "Party Channels: ${
