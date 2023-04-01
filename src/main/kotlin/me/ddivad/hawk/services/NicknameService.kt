@@ -11,19 +11,22 @@ import me.jakejmattson.discordkt.annotations.Service
 class NicknameService(private val configuration: Configuration, private val loggingService: LoggingService) {
     suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
+        if(!partyConfiguration.enabled) {
+            return
+        }
         if (member.isBot) {
             return
         }
-        if (partyConfiguration.mode == "Furry" && (!furryNames.contains(member.displayName) || !furryNames.contains(member.nickname))) {
+        if (partyConfiguration.channelFilterEnabled && !partyConfiguration.channels.contains(channel.id)) {
+            return
+        }
+        if (partyConfiguration.mode == "Furry" && !furryNames.contains(member.displayName)) {
+            println(member.displayName)
             val nickname = furryNames.random()
             changeMemberNickname(guild, member, nickname)
             return
         }
-
         if (partyConfiguration.symbol.isNullOrBlank()) {
-            return
-        }
-        if (partyConfiguration.channelFilterEnabled && !partyConfiguration.channels.contains(channel.id)) {
             return
         }
 
@@ -86,10 +89,10 @@ class NicknameService(private val configuration: Configuration, private val logg
     }
 
     val furryNames = listOf(
-        "Shadowfang Thunderstrike",
-        "Sunnywhisker Briskclaw",
-        "Moonclaw Silvershadow",
-        "Dusksnout Wittytail",
+        "Shadowfang", "Thunderstrike",
+        "Sunnywhisker", "Briskclaw",
+        "Moonclaw", "Silvershadow",
+        "Dusksnout", "Wittytail",
         "Frostyclaw Luckyeyes",
         "Copperpelt Softfur",
         "Silentwhisker Darkmug",
@@ -127,14 +130,11 @@ class NicknameService(private val configuration: Configuration, private val logg
         "Sneakypelt Strongclaw",
         "Twilightfur Wiseyelp",
         "Majesticpaw Darkfeather",
-        "Mooncoat Fierceclaw",
-        "Wildwhisker Cozytail",
+        "Snowpelt Coldtoes",
         "Windyfur Softyelp",
         "Stormyclaw Humbleheart",
         "Tundrapelt Speedytooth",
         "Breezywhisker Rustymug",
-        "Nightfur Swiftshadow",
-        "Frostyclaw Darksnout",
         "Goldenwhisker Jollyclaw",
         "Sandycoat Boldyelp",
         "Lunarclaw Richpelt",
@@ -143,8 +143,6 @@ class NicknameService(private val configuration: Configuration, private val logg
         "Crimsonpaw Wittyheart",
         "Thunderpelt Fierceclaw",
         "Cloudyclaw Silentmug",
-        "Snowyclaw Cozytail",
-        "Sneakyclaw Calmheart",
         "Swiftcoat Windytooth",
         "Midnightwhisker Sillyclaw",
         "Smokyfur Humblepelt",
@@ -158,8 +156,6 @@ class NicknameService(private val configuration: Configuration, private val logg
         "Dawnclaw Rustyheart",
         "Mistyclaw Wildclaw",
         "Gentlewhisker Boldtooth",
-        "Sneakypelt Swiftmug",
-        "Brightclaw Fierceheart",
         "Sablepaw Softtail",
         "Majesticfur Rustyeyes",
         "Frostclaw Coolpaws",
@@ -183,34 +179,54 @@ class NicknameService(private val configuration: Configuration, private val logg
         "Smokysnout Greyhowl",
         "Riverscale Riverheart",
         "Stormysky Thunderpaws",
-        "Nightclaw Darkfur",
-        "Honeybunny Sweetnose",
-        "Grimwhisker Darktooth",
-        "Lightningleopard Electricclaw",
-        "Shadowlynx Sharpshadow",
-        "Moonbeam Brighteyes",
-        "Goldenkitten Softpaws",
-        "Stormystud Wildmane",
-        "Blackbird Wittytoes",
-        "Lionheart Braveclaw",
-        "Flowerpelt Floralhide",
-        "Frostymuzzle Coldnose",
-        "Wildwhirlwind Furryheart",
-        "Rockyclaw Rockyhide",
-        "Cloudystud Mistyclaws",
-        "Duskyfur Mysteriouspelt",
-        "Ironpaws Steelclaw",
-        "Winterfrost Frostyeyes",
-        "Silentsnout Quietgrowl",
-        "Majesticmoon Royalmane",
-        "Rainyday Rainyeyes",
-        "Thickfur Bigclaws",
-        "Lazysnout Sleepyhowl",
-        "Sunnybunny Warmheart",
-        "Thunderclaw Thunderfur",
-        "Autumnleaf Fallingheart",
-        "Rockywhisker Hardnose",
-        "Darkscale Darkheart",
-        "Goldenwhisker Shinytail"
+        "Aurora",
+        "Blaze",
+        "Crimson",
+        "Dakota",
+        "Echo",
+        "Flame",
+        "Ginger",
+        "Harmony",
+        "Indigo",
+        "Jasper",
+        "Koda",
+        "Luna",
+        "Midnight",
+        "Nova",
+        "Onyx",
+        "Phoenix",
+        "Quinn",
+        "Raven",
+        "Sable",
+        "Shadow",
+        "Sky",
+        "Sonic",
+        "Storm",
+        "Talon",
+        "Topaz",
+        "Violet",
+        "Willow",
+        "Wolfie",
+        "Zephyr",
+        "Amber",
+        "Bolt",
+        "Chase",
+        "Dante",
+        "Ember",
+        "Fawn",
+        "Gadget",
+        "Hawk",
+        "Ivy",
+        "Jade",
+        "Kai",
+        "Loki",
+        "Misty",
+        "Nero",
+        "Orion",
+        "Piper",
+        "Riley",
+        "Sapphire",
+        "Smokey",
+        "Tiger",
     )
 }
