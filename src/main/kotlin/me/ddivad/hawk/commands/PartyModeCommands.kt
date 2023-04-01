@@ -16,10 +16,16 @@ fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
         }
     }
 
-    sub("toggleParty", "Toggles party mode") {
-        execute {
+    sub("toggleParty", "Toggles party mode",  ) {
+        execute(ChoiceArg("Mode", "choose a party mode", "Symbol","Furry")) {
+            val choice = args.first
             val guildConfiguration = configuration[guild.id] ?: return@execute
 
+            if (choice == "Symbol") {
+                guildConfiguration.partyModeConfiguration.mode = "Symbol"
+            } else {
+                guildConfiguration.partyModeConfiguration.mode = "Furry"
+            }
             guildConfiguration.partyModeConfiguration.enabled = !guildConfiguration.partyModeConfiguration.enabled
             configuration.save()
             respondPublic(
