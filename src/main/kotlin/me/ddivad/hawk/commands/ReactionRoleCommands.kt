@@ -46,4 +46,3 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
         }
     }
 }
-

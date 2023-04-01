@@ -4,7 +4,7 @@ import dev.kord.core.behavior.channel.asChannelOf
 import dev.kord.core.event.guild.MemberJoinEvent
 import dev.kord.core.event.guild.MemberUpdateEvent
 import dev.kord.core.event.message.MessageCreateEvent
-import me.ddivad.hawk.services.NicknameService
+import me.ddivad.hawk.services.nickname.NicknameService
 import me.jakejmattson.discordkt.dsl.listeners
 
 @Suppress("unused")

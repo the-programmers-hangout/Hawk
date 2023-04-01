@@ -2,10 +2,13 @@ package me.ddivad.hawk.commands
 
 import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
+import me.ddivad.hawk.dataclasses.PartyModeThemes
+import me.jakejmattson.discordkt.arguments.AnyArg
 import me.jakejmattson.discordkt.arguments.ChannelArg
 import me.jakejmattson.discordkt.arguments.ChoiceArg
 import me.jakejmattson.discordkt.arguments.EveryArg
 import me.jakejmattson.discordkt.commands.subcommand
+import me.jakejmattson.discordkt.dsl.edit
 
 @Suppress("unused")
 fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
@@ -16,22 +19,27 @@ fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
         }
     }
 
-    sub("toggleParty", "Toggles party mode",  ) {
-        execute(ChoiceArg("Mode", "choose a party mode", "Symbol","Furry")) {
+    sub("toggleParty", "Toggles party mode") {
+        execute(autocompleteModeArg()) {
             val choice = args.first
             val guildConfiguration = configuration[guild.id] ?: return@execute
-
-            if (choice == "Symbol") {
-                guildConfiguration.partyModeConfiguration.mode = "Symbol"
+            if (choice == null) {
+                if (guildConfiguration.partyModeConfiguration.enabled) {
+                    configuration.edit { guildConfiguration.partyModeConfiguration.enabled = false }
+                    respondPublic("We're done. That's all folks!")
+                    return@execute
+                } else {
+                    respond("**Mode** is required when enabling a party")
+                    return@execute
+                }
             } else {
-                guildConfiguration.partyModeConfiguration.mode = "Furry"
+                val mode = PartyModeThemes.valueOf(choice)
+                configuration.edit {
+                    guildConfiguration.partyModeConfiguration.theme = mode
+                    guildConfiguration.partyModeConfiguration.enabled = !guildConfiguration.partyModeConfiguration.enabled
+                }
+                respondPublic("Let's get this **${mode.name.lowercase()}** party started!")
             }
-            guildConfiguration.partyModeConfiguration.enabled = !guildConfiguration.partyModeConfiguration.enabled
-            configuration.save()
-            respondPublic(
-                if (guildConfiguration.partyModeConfiguration.enabled) "Let's get this party started!  ${if (guildConfiguration.partyModeConfiguration.mode == "Symbol") guildConfiguration.partyModeConfiguration.symbol else ""}"
-                else "We're done. That's all folks!"
-            )
         }
     }
 
@@ -114,3 +122,7 @@ fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
         }
     }
 }
+
+fun autocompleteModeArg() = AnyArg("Mode", "Party Mode").autocomplete {
+    PartyModeThemes.values().joinToString(", ").split(", ")
+}.optionalNullable(null)
