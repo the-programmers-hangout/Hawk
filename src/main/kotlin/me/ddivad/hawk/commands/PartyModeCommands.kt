@@ -29,7 +29,7 @@ fun partyModeCommands(configuration: Configuration) = subcommand("Party") {
             guildConfiguration.partyModeConfiguration.enabled = !guildConfiguration.partyModeConfiguration.enabled
             configuration.save()
             respondPublic(
-                if (guildConfiguration.partyModeConfiguration.enabled) "Let's get this party started! ${guildConfiguration.partyModeConfiguration.symbol}"
+                if (guildConfiguration.partyModeConfiguration.enabled) "Let's get this party started!  ${if (guildConfiguration.partyModeConfiguration.mode == "Symbol") guildConfiguration.partyModeConfiguration.symbol else ""}"
                 else "We're done. That's all folks!"
             )
         }
