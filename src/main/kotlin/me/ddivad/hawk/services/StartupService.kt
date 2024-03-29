@@ -1,6 +1,7 @@
 package me.ddivad.hawk.services
 
 import dev.kord.core.behavior.getChannelOfOrNull
+import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.embeds.createReactionRoleMenu
@@ -29,7 +30,7 @@ class StartupService(
             }
 
             guildConfig.reactionRoles.forEach {
-                val channel = guild.getChannelOfOrNull<TextChannel>(it.channel) ?: return
+                val channel = guild.getChannelOfOrNull<GuildMessageChannel>(it.channel) ?: return
                 val message = channel.getMessageOrNull(it.messageId!!) ?: return
                 logger.info {
                     buildGuildLogMessage(
