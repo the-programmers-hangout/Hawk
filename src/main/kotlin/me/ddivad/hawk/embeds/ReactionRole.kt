@@ -23,12 +23,19 @@ suspend fun MenuBuilder.createReactionRoleMenu(discord: Discord, guild: Guild, r
     }
     buttons {
         runBlocking {
-            reactionRole.roles.forEach {
-                val liveRole = guild.getRole(it)
+            reactionRole.roles.forEach { role ->
+                val liveRole = guild.getRole(role)
 
                 actionButton(liveRole.name, null) {
                     val member = guild.getMemberOrNull(this.user.id) ?: return@actionButton
-                    if (!member.roles.toList().contains(liveRole)) {
+                    if (!member.roleIds.contains(role)) {
+                        if (!reactionRole.allowMultiple) {
+                            reactionRole.roles.forEach { role ->
+                                if (member.roleIds.contains(role)) {
+                                    member.removeRole(role)
+                                }
+                            }
+                        }
                         member.addRole(liveRole.id, "Reaction button clicked")
                         respondEphemeral { content = "Assigned role ${liveRole.name}" }
                         loggingService.reactionRoleAdded(guild, member, liveRole)
