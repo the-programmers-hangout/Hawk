@@ -28,9 +28,9 @@
 | nick      | LowerMemberArg, Theme, [Nickname] | Set a member's nickname               |
 
 ## ReactionRole
-| Commands           | Arguments               | Description                  |
-|--------------------|-------------------------|------------------------------|
-| createReactionRole | Roles, EmbedDescription | Create a reaction role embed |
+| Commands           | Arguments                                | Description                  |
+|--------------------|------------------------------------------|------------------------------|
+| createReactionRole | Roles, EmbedDescription, [AllowMultiple] | Create a reaction role embed |
 
 ## Utility
 | Commands | Arguments | Description          |

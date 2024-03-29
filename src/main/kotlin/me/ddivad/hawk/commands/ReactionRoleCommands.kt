@@ -6,6 +6,7 @@ import me.ddivad.hawk.dataclasses.ReactionRole
 import me.ddivad.hawk.embeds.createReactionRoleMenu
 import me.ddivad.hawk.services.LoggingService
 import me.ddivad.hawk.services.buildGuildLogMessage
+import me.jakejmattson.discordkt.arguments.BooleanArg
 import me.jakejmattson.discordkt.arguments.EveryArg
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.dsl.edit
@@ -19,18 +20,20 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
     slash("createReactionRole", "Create a reaction role embed", Permissions.ADMINISTRATOR) {
         execute(
             EveryArg("Roles", "Role IDs to be added. If using multiple roles, separate IDs with a space"),
-            EveryArg("EmbedDescription", "Text to be added to reaction role embed")
+            EveryArg("EmbedDescription", "Text to be added to reaction role embed"),
+            BooleanArg("AllowMultiple", "yes", "no", "Allow more than 1 role to be chosen. Defualts to yes").optional(true)
         ) {
-            val (roleIds, descriptionText) = args
+            val (roleIds, descriptionText, allowMultiple) = args
             try {
-                val roles = roleIds.split(" ").map { guild.getRole(it.toSnowflake()) }
                 val guildConfig = configuration[guild.id] ?: return@execute
+                val roles = roleIds.split(" ").map { guild.getRole(it.toSnowflake()) }
                 val reactionRole = ReactionRole(
                     guildConfig.reactionRoles.size + 1,
                     descriptionText,
                     roles.map { it.id }.toMutableList(),
                     null,
-                    channel.id
+                    channel.id,
+                    allowMultiple
                 )
                 reactionRole.messageId = respondMenu {
                     createReactionRoleMenu(discord, guild, reactionRole)
@@ -40,7 +43,7 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
                 }
                 respond("Reaction role created")
             } catch (e: Exception) {
-                respond("Error parsing roles. Make sure IDs $roleIds are valid roles and separated by ` ` if adding multiple roles.")
+                respond("Error parsing roles. Make sure role IDs $roleIds are valid roles and separated by ` ` if adding multiple roles.")
                 logger.error(e) { buildGuildLogMessage(guild, "Failed to parse roles") }
             }
         }
