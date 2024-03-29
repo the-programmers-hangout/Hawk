@@ -36,6 +36,11 @@ class LoggingService(private val config: Configuration) {
         "**Info** :: Blocklisted symbols detected and removed from ${member.idDescriptor()} (${member.displayName})"
     }
 
+    fun guildLog(guild: Guild, message: String) = withLog(guild) {
+        logger.info { buildGuildLogMessage(guild, message) }
+        "**Info** :: $message"
+    }
+
     private fun withLog(guild: Guild, f: () -> String) =
         getLogConfig(guild).apply {
             runBlocking {
@@ -57,6 +62,6 @@ class LoggingService(private val config: Configuration) {
 
     private suspend fun alert(guild: Guild, alertChannelId: Snowflake, message: String) =
         guild.getChannelOf<TextChannel>(alertChannelId).createMessage(message)
+    private fun buildGuildLogMessage(guild: Guild, message: String) = "${guild.name} (${guild.id}): $message"
 }
 
-fun buildGuildLogMessage(guild: Guild, message: String) = "${guild.name} (${guild.id}): $message"

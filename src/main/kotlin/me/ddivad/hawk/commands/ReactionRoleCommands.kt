@@ -5,15 +5,11 @@ import me.ddivad.hawk.dataclasses.Permissions
 import me.ddivad.hawk.dataclasses.ReactionRole
 import me.ddivad.hawk.embeds.createReactionRoleMenu
 import me.ddivad.hawk.services.LoggingService
-import me.ddivad.hawk.services.buildGuildLogMessage
 import me.jakejmattson.discordkt.arguments.BooleanArg
 import me.jakejmattson.discordkt.arguments.EveryArg
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.dsl.edit
 import me.jakejmattson.discordkt.extensions.toSnowflake
-import mu.KotlinLogging
-
-val logger = KotlinLogging.logger { }
 
 @Suppress("unused")
 fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingService) = commands("ReactionRole") {
@@ -42,9 +38,10 @@ fun reactionRoleCommands(configuration: Configuration, loggingService: LoggingSe
                     guildConfig.reactionRoles.add(reactionRole)
                 }
                 respond("Reaction role created")
+                loggingService.guildLog(guild, "Reaction role ${reactionRole.id} created")
             } catch (e: Exception) {
-                respond("Error parsing roles. Make sure role IDs $roleIds are valid roles and separated by ` ` if adding multiple roles.")
-                logger.error(e) { buildGuildLogMessage(guild, "Failed to parse roles") }
+                respond("Error parsing roles. Make sure IDs $roleIds are valid roles and separated by ` ` if adding multiple roles.")
+                loggingService.guildLog(guild, "Failed to parse roles $roleIds")
             }
         }
     }
