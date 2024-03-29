@@ -29,12 +29,8 @@ data class Configuration(
     fun isFullyConfigured(guild: Guild): Boolean {
         val guildConfiguration = guildConfigurations[guild.id] ?: return false
 
-        if (guildConfiguration.loggingConfiguration.logChannel == null ||
-            guildConfiguration.loggingConfiguration.alertChannel == null
-        ) {
-            return false
-        }
-        return true
+        return !(guildConfiguration.loggingConfiguration.logChannel == null ||
+                guildConfiguration.loggingConfiguration.alertChannel == null)
     }
 }
 

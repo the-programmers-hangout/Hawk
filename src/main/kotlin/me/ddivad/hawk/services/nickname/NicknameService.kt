@@ -3,6 +3,7 @@ package me.ddivad.hawk.services.nickname
 import dev.kord.core.behavior.edit
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.Member
+import dev.kord.core.entity.channel.GuildChannel
 import dev.kord.core.entity.channel.TextChannel
 import me.ddivad.hawk.dataclasses.Configuration
 import me.ddivad.hawk.dataclasses.FurryNames
@@ -18,7 +19,7 @@ class NicknameService(
     private val loggingService: LoggingService,
     private val furryNames: FurryNames
 ) {
-    suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: TextChannel) {
+    suspend fun setOrRemovePartyNickname(guild: Guild, member: Member, channel: GuildChannel) {
         val partyConfiguration = configuration[guild.id]?.partyModeConfiguration ?: return
         if (member.isBot) {
             return
