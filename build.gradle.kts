@@ -1,7 +1,7 @@
 import java.util.*
 
 group = "me.ddivad"
-version = "3.2"
+version = "3.2.1"
 description = "A bot to add and maintain a symbol as a prefix or suffix in staff names.\n"
 
 plugins {
