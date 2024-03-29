@@ -75,5 +75,6 @@ data class ReactionRole(
     val description: String,
     val roles: MutableList<Snowflake>,
     var messageId: Snowflake?,
-    val channel: Snowflake
+    val channel: Snowflake,
+    val allowMultiple: Boolean = true
 )
